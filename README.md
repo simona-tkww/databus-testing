@@ -29,18 +29,40 @@ npm install
 
 ## How to Use
 
-### Step 1: Start the Message Receiver Server
+### 🚀 Quick Start (First Time Setup)
+
+**Step 1: Start your local server**
 ```bash
 npm start
 ```
 ✅ Server starts at: https://localhost:8080
-✅ Dashboard shows real-time messages
 
-### Step 2: Send a Test Message to databus
+**Step 2: Create public tunnel (NEW TERMINAL)**
+```bash
+cloudflared tunnel --url localhost:8080
+```
+✅ Look for the box showing your tunnel URL like:
+```
++------------------------------------------------------------------------------+
+|  https://random-words-here.trycloudflare.com                                |
++------------------------------------------------------------------------------+
+```
+
+**Step 3: Configure your databus**
+Use this as your endpoint:
+```
+https://random-words-here.trycloudflare.com/webhook/positive
+```
+
+**Step 4: Test the flow**
 ```bash
 python3 send-message-to-databus.py
 ```
-✅ Sends message to databus endpoint
+✅ Sends message to databus → databus forwards to your tunnel → your server receives it
+
+**Step 5: Monitor messages**
+- Dashboard: https://localhost:8080 (see received messages)
+- Keep both terminals open!
 
 ## What You'll See
 
@@ -56,14 +78,17 @@ Databus accepted your message.
 
 ## Configure Databus
 
-Use this as your subscriber endpoint:
+**Use this endpoint in your databus configuration:**
 ```
-https://localhost:8080/webhook/positive
-```
-
-**Note:** The databus and your subscriber app need to be on the same network for localhost to work. If the databus is on a different server, use your IP address instead:
-```
-https://YOUR_IP_ADDRESS:8080/webhook/positive
+https://YOUR-TUNNEL-URL.trycloudflare.com/webhook/positive
 ```
 
-To find your IP address, run: `ifconfig | grep "inet " | grep -v 127.0.0.1`
+**Example:** If your tunnel shows `https://fonts-human-riders-seminar.trycloudflare.com`, then use:
+```
+https://fonts-human-riders-seminar.trycloudflare.com/webhook/positive
+```
+
+**Important Notes:**
+- Keep the tunnel terminal open - if you close it, the tunnel stops working
+- The tunnel URL changes each time you restart it
+- Update the databus configuration whenever you restart the tunnel
