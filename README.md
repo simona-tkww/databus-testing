@@ -39,7 +39,7 @@ npm start
 
 **Step 2: Create public tunnel (NEW TERMINAL)**
 ```bash
-cloudflared tunnel --url localhost:8080
+cloudflared tunnel --url https://localhost:8080 --no-tls-verify
 ```
 ✅ Look for the box showing your tunnel URL like:
 ```
