@@ -7,7 +7,7 @@ Testing setup for databus messaging system with publisher app and subscriber app
 This project simulates a complete databus messaging flow:
 
 1. **Publisher App** (Python script) → Sends messages to databus
-2. **Databus** → Stores message in a subject and forwards messages to a subsirber
+2. **Databus** → Stores message in a subject and forwards messages to a subsriber
 3. **Subscriber App** (Local server) → Receives messages from databus
 
 ## Requirements
