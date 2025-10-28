@@ -1,6 +1,6 @@
 # databus-testing
 
-Testing setup for databus messaging system with publisher app and subscriber app.
+Testing setup for databus messaging system with publisher and subscriber apps.
 
 ## What This Does
 
@@ -31,9 +31,10 @@ npm install
 
 ### Step 1: Start the Message Receiver Server
 ```bash
-npm run dev-https
+npm start
 ```
 ✅ Server starts at: https://localhost:8080
+✅ Dashboard shows real-time messages
 
 ### Step 2: Send a Test Message to databus
 ```bash
@@ -50,12 +51,19 @@ Databus accepted your message.
 ```
 
 **✅ Subscriber (Server):**
-- **Dashboard**: https://localhost:8080 (monitor activity)  
-- **Webhook**: https://databus-testing.vercel.app/webhook/positive (receives messages)
+- **Dashboard**: https://localhost:8080 (monitor activity in real-time)  
+- **Webhook**: https://localhost:8080/webhook/positive (receives messages)
 
 ## Configure Databus
 
 Use this as your subscriber endpoint:
 ```
-https://databus-testing.vercel.app/webhook/positive
+https://localhost:8080/webhook/positive
 ```
+
+**Note:** The databus and your subscriber app need to be on the same network for localhost to work. If the databus is on a different server, use your IP address instead:
+```
+https://YOUR_IP_ADDRESS:8080/webhook/positive
+```
+
+To find your IP address, run: `ifconfig | grep "inet " | grep -v 127.0.0.1`

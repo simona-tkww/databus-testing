@@ -1,26 +1,8 @@
 {
   "name": "databus-testing",
   "version": "1.0.0",
-  "description": "Python script for sending test messages to the databus endpoint.",
-  "main": "index.js",
+  "description": "Databus testing with Python publisher and Node.js subscriber",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "http-server -a 127.0.0.1",
-    "dev-https": "http-server -a 127.0.0.1 --ssl --cert cert.pem --key key.pem"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/simona-tkww/databus-testing.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/simona-tkww/databus-testing/issues"
-  },
-  "homepage": "https://github.com/simona-tkww/databus-testing#readme",
-  "devDependencies": {
-    "http-server": "^14.1.1"
+    "start": "node server.js"
   }
 }
