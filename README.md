@@ -30,14 +30,6 @@ npm install
 ## How to Use
 
 ### Step 1: Start the Message Receiver Server
-
-**HTTP (Development):**
-```bash
-npm run dev
-```
-✅ Server starts at: http://localhost:8080
-
-**HTTPS (Production-like):**
 ```bash
 npm run dev-https
 ```
@@ -58,23 +50,12 @@ Databus accepted your message.
 ```
 
 **✅ Subscriber (Server):**
-
-**HTTP Mode:**
-- **Dashboard**: http://localhost:8080 (monitor activity)
-- **Webhook**: http://localhost:8080/webhook.response200.html (receives messages)
-
-**HTTPS Mode:**
 - **Dashboard**: https://localhost:8080 (monitor activity)  
 - **Webhook**: https://localhost:8080/webhook.response200.html (receives messages)
 
 ## Configure Databus
 
-**For Development (HTTP):**
-```
-http://localhost:8080/webhook.response200.html
-```
-
-**For Production (HTTPS):**
+Use this as your subscriber endpoint:
 ```
 https://localhost:8080/webhook.response200.html
 ```
