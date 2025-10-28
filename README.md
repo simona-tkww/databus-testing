@@ -51,11 +51,11 @@ Databus accepted your message.
 
 **✅ Subscriber (Server):**
 - **Dashboard**: https://localhost:8080 (monitor activity)  
-- **Webhook**: https://localhost:8080/webhook.response200.html (receives messages)
+- **Webhook**: https://databus-testing.vercel.app/webhook/positive (receives messages)
 
 ## Configure Databus
 
 Use this as your subscriber endpoint:
 ```
-https://localhost:8080/webhook.response200.html
+https://databus-testing.vercel.app/webhook/positive
 ```
