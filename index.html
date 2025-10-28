@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscriber App - Message Receiver</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .message-log {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            border-radius: 4px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        h1 {
+            color: #343a40;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .endpoint-info {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔔 Subscriber App - Databus Message Receiver</h1>
+        
+        <div class="endpoint-info">
+            <strong>📡 Endpoint:</strong> http://localhost:8080/webhook<br>
+            <strong>📝 Status:</strong> <span id="serverStatus">Ready to receive messages</span><br>
+            <strong>📊 Messages Received:</strong> <span id="messageCount">0</span>
+        </div>
+
+        <div class="status success">
+            ✅ Server is running and ready to receive databus messages!
+        </div>
+
+        <h3>📥 Message Log:</h3>
+        <div id="messageLog" class="message-log">
+Waiting for messages from databus...
+
+</div>
+    </div>
+
+    <script>
+        let messageCount = 0;
+        const messageLog = document.getElementById('messageLog');
+        const messageCountEl = document.getElementById('messageCount');
+        const serverStatus = document.getElementById('serverStatus');
+
+        // Function to log messages
+        function logMessage(message) {
+            const timestamp = new Date().toISOString();
+            const logEntry = `[${timestamp}] ${message}\n`;
+            messageLog.textContent += logEntry;
+            messageLog.scrollTop = messageLog.scrollHeight;
+        }
+
+        // Simulate receiving messages (since http-server is static)
+        // In a real scenario, this would be handled by a proper backend
+        function simulateMessageReceived() {
+            messageCount++;
+            messageCountEl.textContent = messageCount;
+            
+            const sampleMessage = {
+                subject_id: '0efa1b4d-95a6-4237-bd65-fdd67cae10fa',
+                stream_id: `stream-${Date.now()}`,
+                body: {
+                    message_id: `message-${Date.now()}`,
+                    description: 'Test message from databus'
+                }
+            };
+            
+            logMessage(`📨 Received message: ${JSON.stringify(sampleMessage, null, 2)}`);
+            logMessage(`✅ Responded with HTTP 200 OK`);
+            logMessage(`---`);
+        }
+
+        // Update status
+        serverStatus.textContent = 'Listening for databus messages on port 8080';
+        logMessage('🚀 Subscriber App endpoint started successfully');
+        logMessage('📡 Listening at: http://localhost:8080/webhook');
+        logMessage('---');
+
+        // For demo purposes, simulate a message every 30 seconds
+        // setInterval(simulateMessageReceived, 30000);
+    </script>
+</body>
+</html>

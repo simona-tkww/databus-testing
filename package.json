@@ -1,0 +1,25 @@
+{
+  "name": "databus-testing",
+  "version": "1.0.0",
+  "description": "Python script for sending test messages to the databus endpoint.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "http-server -a 127.0.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simona-tkww/databus-testing.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/simona-tkww/databus-testing/issues"
+  },
+  "homepage": "https://github.com/simona-tkww/databus-testing#readme",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
