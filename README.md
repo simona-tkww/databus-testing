@@ -1,127 +1,101 @@
-# databus-testing
+# Databus Testing Suite
 
-Testing setup for databus messaging system with publisher and subscriber apps.
+A complete testing setup for databus messaging systems with publisher and subscriber apps.
 
-## What This Does
+## 📋 Overview
 
 This project simulates a complete databus messaging flow:
 
-1. **Publisher App** (Python script) → Sends messages to databus
-2. **Databus** → Stores message in a subject and forwards messages to a subscriber
-3. **Subscriber App** (Local server) → Receives messages from databus
+1. **Publisher App** (Python script) → Sends authenticated messages to databus
+2. **Databus** → Stores messages and forwards them to subscribers  
+3. **Subscriber App** (Local HTTPS server) → Receives webhook messages from databus
 
-## Requirements
 
-- **Python 3.11+** (for the publisher)
-- **Node.js** (for the subscriber server)
+## 🔧 Prerequisites
 
-## Setup
+- **Python 3.11+** with pip
+- **Node.js** (any recent version)
+- **Cloudflared** tunnel (for public access)
 
-1. **Install Python packages:**
+---
+
+## ⚡ Quick Start
+
+### 1️⃣ Install Dependencies
+
 ```bash
+# Install Python packages
 pip install requests PyJWT
 ```
 
-2. **Install Node.js dependencies:**
+**Note:** No Node.js dependencies needed - server uses built-in modules only!
+
+### 2️⃣ Start Local Server
+
+**Open Terminal 1:**
 ```bash
-npm install
+node server.js
 ```
 
-## How to Use
-
-### 🚀 Quick Start
-
-**Step 1: Start your local server (NEW TERMINAL)**
-```bash
-npm start
+**Expected output:**
 ```
-✅ Server starts at: https://localhost:8080
+🚀 Subscriber App running at https://localhost:8080
+✅ Webhook POSITIVE (returns 200): https://localhost:8080/webhook/positive
+❌ Webhook NEGATIVE (returns 500): https://localhost:8080/webhook/negative
+📊 Dashboard: https://localhost:8080
+```
 
-**Step 2: Create public tunnel (NEW TERMINAL)**
+### 3️⃣ Create Public Tunnel
+
+**Open Terminal 2:**
 ```bash
 cloudflared tunnel --url https://localhost:8080 --no-tls-verify
 ```
-✅ Look for the box showing your tunnel URL like:
+
+**Look for your tunnel URL:**
 ```
 +------------------------------------------------------------------------------+
 |  https://random-words-here.trycloudflare.com                                |
 +------------------------------------------------------------------------------+
 ```
 
-**Step 3: Configure your databus**
-Choose your endpoint based on testing needs:
+### 4️⃣ Configure Databus
 
-**For SUCCESS testing (returns 200):**
-```
-https://andrea-levy-forgot-toolbox.trycloudflare.com/webhook/positive
-```
+Choose your webhook endpoint based on testing scenario:
 
-**For FAILURE testing (returns 500):**
-```
-https://andrea-levy-forgot-toolbox.trycloudflare.com/webhook/negative
-```
+| Test Scenario | Endpoint | Response | Usage |
+|---------------|----------|----------|-------|
+| **Success Testing** | `/webhook/positive` | Always 200 | Test normal message delivery |
+| **Failure Testing** | `/webhook/negative` | Always 500 | Test retry/error handling |
 
-**Step 4: Test the flow**
+**Example URLs:**
+- Success: `https://your-tunnel-url.trycloudflare.com/webhook/positive`  
+- Failure: `https://your-tunnel-url.trycloudflare.com/webhook/negative`
+
+### 5️⃣ Send Test Message
+
+**Open Terminal 3:**
 ```bash
 python3 send-message-to-databus.py
 ```
-✅ Sends message to databus → databus forwards to your tunnel → your server receives it
 
-**Step 5: Monitor messages**
-- Dashboard: https://localhost:8080 (see received messages)
-- Keep both terminals open!
-
-## What You'll See
-
-**✅ Publisher (Python script):**
+**Expected output:**
 ```
 SUCCESS! (HTTP 200)
 Databus accepted your message.
 ```
 
-**✅ Subscriber (Server):**
-- **Dashboard**: https://localhost:8080 (monitor activity in real-time)  
-- **Webhook POSITIVE** (returns 200): https://localhost:8080/webhook/positive
-- **Webhook NEGATIVE** (returns 500): https://localhost:8080/webhook/negative
+### 6️⃣ Monitor Results
 
-## Configure Databus
+- **📊 Dashboard**: https://localhost:8080 (real-time message monitoring)
+- **🖥️ Server logs**: Check Terminal 1 for webhook activity
+- **🔍 Message details**: Dashboard shows endpoint, response codes, and data
 
-**Choose your endpoint based on testing scenario:**
 
-**For SUCCESS testing (databus gets 200 response):**
-```
-https://YOUR-TUNNEL-URL.trycloudflare.com/webhook/positive
-```
 
-**For FAILURE testing (databus gets 500 response):**
-```
-https://YOUR-TUNNEL-URL.trycloudflare.com/webhook/negative
-```
+## ⚠️ Important Notes
 
-**Examples:** If your tunnel shows `https://andrea-levy-forgot-toolbox.trycloudflare.com`, then use:
-- Success: `https://andrea-levy-forgot-toolbox.trycloudflare.com/webhook/positive`
-- Failure: `https://andrea-levy-forgot-toolbox.trycloudflare.com/webhook/negative`
-
-**Important Notes:**
-- Keep the tunnel terminal open - if you close it, the tunnel stops working
-- The tunnel URL changes each time you restart it
-- Update the databus configuration whenever you restart the tunnel
-
-## Testing Both Success and Failure Scenarios
-
-No more mode switching needed! Your server now has two endpoints:
-
-### ✅ Test SUCCESS behavior:
-1. **Configure databus** with: `https://your-tunnel-url.trycloudflare.com/webhook/positive`
-2. **Send message**: `python3 send-message-to-databus.py`
-3. **Result**: Databus gets 200 → Message delivered successfully
-
-### ❌ Test FAILURE behavior:
-1. **Configure databus** with: `https://your-tunnel-url.trycloudflare.com/webhook/negative`
-2. **Send message**: `python3 send-message-to-databus.py`
-3. **Result**: Databus gets 500 → Message failed, databus retries
-
-### 📊 Monitor both scenarios:
-- **Dashboard**: https://localhost:8080 shows all messages with endpoint and response code
-- **Logs**: Terminal shows which endpoint received each message
-- **Messages**: Both endpoints store messages, so you can see the full history
+### Tunnel Management
+- **Keep Terminal 2 open** - closing stops the tunnel
+- **URL changes** on each restart - update databus config accordingly
+- **SSL handling** - `--no-tls-verify` flag required for self-signed certs

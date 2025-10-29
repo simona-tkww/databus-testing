@@ -1,8 +1,0 @@
-{
-  "name": "databus-testing",
-  "version": "1.0.0",
-  "description": "Databus testing with Python publisher and Node.js subscriber",
-  "scripts": {
-    "start": "node server.js"
-  }
-}

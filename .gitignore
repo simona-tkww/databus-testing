@@ -1,21 +1,15 @@
 # Dependencies
 node_modules/
-package-lock.json
 
 # Environment files
 .env
-.env.*
 
 # Python
 __pycache__/
-*.py[cod]
-*$py.class
-venv/
-.venv/
+*.pyc
 
 # Logs
 *.log
 
 # OS
 .DS_Store
-Thumbs.db
