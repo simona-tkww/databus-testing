@@ -12,6 +12,9 @@ const credentials = { key: privateKey, cert: certificate };
 let receivedMessages = [];
 let messageCount = 0;
 
+// Response mode: 'success' or 'error'
+let responseMode = 'success';
+
 // Serve static files and handle API endpoints
 const server = https.createServer(credentials, (req, res) => {
   const parsedUrl = url.parse(req.url, true);
@@ -56,14 +59,24 @@ const server = https.createServer(credentials, (req, res) => {
 
         console.log(`📨 Webhook received message #${messageCount}:`, data);
 
-        // Return success response
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ 
-          status: 'success', 
-          message: 'Webhook received successfully',
-          messageId: messageCount,
-          timestamp: timestamp
-        }));
+        // Response based on current mode
+        if (responseMode === 'success') {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ 
+            status: 'success', 
+            message: 'Webhook received successfully',
+            messageId: messageCount,
+            timestamp: timestamp
+          }));
+        } else {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ 
+            status: 'error', 
+            message: 'Server intentionally returning 500 error',
+            messageId: messageCount,
+            timestamp: timestamp
+          }));
+        }
       } catch (error) {
         console.error('Error parsing webhook data:', error);
         res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -79,6 +92,45 @@ const server = https.createServer(credentials, (req, res) => {
     res.end(JSON.stringify({ 
       messages: receivedMessages,
       totalCount: messageCount
+    }));
+    return;
+  }
+
+  // API endpoint to set response mode
+  if (pathname === '/api/mode' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => {
+      body += chunk.toString();
+    });
+    req.on('end', () => {
+      try {
+        const data = JSON.parse(body);
+        if (data.mode === 'success' || data.mode === 'error') {
+          responseMode = data.mode;
+          console.log(`🔧 Response mode changed to: ${responseMode}`);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ 
+            status: 'success', 
+            message: `Response mode set to ${responseMode}`,
+            currentMode: responseMode
+          }));
+        } else {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Invalid mode. Use "success" or "error"' }));
+        }
+      } catch (error) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Invalid JSON' }));
+      }
+    });
+    return;
+  }
+
+  // API endpoint to get current mode
+  if (pathname === '/api/mode' && req.method === 'GET') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ 
+      currentMode: responseMode
     }));
     return;
   }

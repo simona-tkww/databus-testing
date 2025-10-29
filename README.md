@@ -92,3 +92,36 @@ https://fonts-human-riders-seminar.trycloudflare.com/webhook/positive
 - Keep the tunnel terminal open - if you close it, the tunnel stops working
 - The tunnel URL changes each time you restart it
 - Update the databus configuration whenever you restart the tunnel
+
+## Testing Response Modes
+
+Your server can simulate both successful and failed webhook responses for testing:
+
+### Switch to SUCCESS mode (returns HTTP 200):
+```bash
+curl -X POST https://localhost:8080/api/mode \
+  -H "Content-Type: application/json" \
+  -d '{"mode": "success"}' -k
+```
+
+### Switch to ERROR mode (returns HTTP 500):
+```bash
+curl -X POST https://localhost:8080/api/mode \
+  -H "Content-Type: application/json" \
+  -d '{"mode": "error"}' -k
+```
+
+### Check current mode:
+```bash
+curl -k https://localhost:8080/api/mode
+```
+
+### Testing workflow:
+1. **Default**: Server starts in SUCCESS mode
+2. **Test success**: Send message → databus gets 200 → message delivered  
+3. **Test failure**: Switch to ERROR mode → send message → databus gets 500 → message failed/retried
+4. **Reset**: Switch back to SUCCESS mode for normal operation
+
+### What you'll see:
+- **Mode changes**: `🔧 Response mode changed to: success/error`
+- **Webhooks**: `📨 Webhook received message #X` (always logs, regardless of response code)
