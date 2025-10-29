@@ -32,7 +32,7 @@ const server = https.createServer(credentials, (req, res) => {
     return;
   }
 
-  // API endpoint for webhook
+  // Webhook endpoint that always returns 200 (success)
   if (pathname === '/webhook/positive' && req.method === 'POST') {
     let body = '';
     req.on('data', chunk => {
@@ -49,7 +49,9 @@ const server = https.createServer(credentials, (req, res) => {
           id: messageCount,
           timestamp: timestamp,
           data: data,
-          headers: req.headers
+          headers: req.headers,
+          endpoint: '/webhook/positive',
+          responseCode: 200
         });
 
         // Keep only last 50 messages
@@ -57,26 +59,64 @@ const server = https.createServer(credentials, (req, res) => {
           receivedMessages = receivedMessages.slice(0, 50);
         }
 
-        console.log(`📨 Webhook received message #${messageCount}:`, data);
+        console.log(`✅ Webhook POSITIVE received message #${messageCount} (returning 200):`, data);
 
-        // Response based on current mode
-        if (responseMode === 'success') {
-          res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ 
-            status: 'success', 
-            message: 'Webhook received successfully',
-            messageId: messageCount,
-            timestamp: timestamp
-          }));
-        } else {
-          res.writeHead(500, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ 
-            status: 'error', 
-            message: 'Server intentionally returning 500 error',
-            messageId: messageCount,
-            timestamp: timestamp
-          }));
+        // Always return 200 for positive endpoint
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ 
+          status: 'success', 
+          message: 'Webhook received successfully',
+          messageId: messageCount,
+          timestamp: timestamp,
+          endpoint: 'positive'
+        }));
+      } catch (error) {
+        console.error('Error parsing webhook data:', error);
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Invalid JSON' }));
+      }
+    });
+    return;
+  }
+
+  // Webhook endpoint that always returns 500 (error)
+  if (pathname === '/webhook/negative' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => {
+      body += chunk.toString();
+    });
+    req.on('end', () => {
+      try {
+        const data = JSON.parse(body);
+        messageCount++;
+        const timestamp = new Date().toISOString();
+        
+        // Store the message
+        receivedMessages.unshift({
+          id: messageCount,
+          timestamp: timestamp,
+          data: data,
+          headers: req.headers,
+          endpoint: '/webhook/negative',
+          responseCode: 500
+        });
+
+        // Keep only last 50 messages
+        if (receivedMessages.length > 50) {
+          receivedMessages = receivedMessages.slice(0, 50);
         }
+
+        console.log(`❌ Webhook NEGATIVE received message #${messageCount} (returning 500):`, data);
+
+        // Always return 500 for negative endpoint
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ 
+          status: 'error', 
+          message: 'Webhook processing failed (simulated)',
+          messageId: messageCount,
+          timestamp: timestamp,
+          endpoint: 'negative'
+        }));
       } catch (error) {
         console.error('Error parsing webhook data:', error);
         res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -168,6 +208,7 @@ const server = https.createServer(credentials, (req, res) => {
 const PORT = 8080;
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Subscriber App running at https://localhost:${PORT}`);
-  console.log(`📡 Webhook endpoint: https://localhost:${PORT}/webhook/positive`);
+  console.log(`✅ Webhook POSITIVE (returns 200): https://localhost:${PORT}/webhook/positive`);
+  console.log(`❌ Webhook NEGATIVE (returns 500): https://localhost:${PORT}/webhook/negative`);
   console.log(`📊 Dashboard: https://localhost:${PORT}`);
 });

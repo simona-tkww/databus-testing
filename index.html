@@ -92,7 +92,9 @@ Waiting for messages from databus...
                         let logContent = 'Recent messages from databus:\n\n';
                         
                         recentMessages.forEach(msg => {
-                            logContent += `[${msg.timestamp}] Message #${msg.id}\n`;
+                            const endpointEmoji = msg.responseCode === 200 ? '✅' : '❌';
+                            const endpointName = msg.endpoint || '/webhook/positive';
+                            logContent += `[${msg.timestamp}] ${endpointEmoji} Message #${msg.id} (${endpointName} → ${msg.responseCode})\n`;
                             logContent += `Data: ${JSON.stringify(msg.data, null, 2)}\n`;
                             logContent += `---\n\n`;
                         });
@@ -107,9 +109,6 @@ Waiting for messages from databus...
 
         // Update status
         serverStatus.textContent = 'Listening for databus messages on port 8080';
-        logMessage('🚀 Subscriber App endpoint started successfully');
-        logMessage('📡 Listening at: https://localhost:8080/webhook/positive');
-        logMessage('---');
 
         // Poll for new messages every 2 seconds
         setInterval(fetchMessages, 2000);

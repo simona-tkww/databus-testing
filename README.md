@@ -29,9 +29,9 @@ npm install
 
 ## How to Use
 
-### 🚀 Quick Start (First Time Setup)
+### 🚀 Quick Start
 
-**Step 1: Start your local server**
+**Step 1: Start your local server (NEW TERMINAL)**
 ```bash
 npm start
 ```
@@ -49,9 +49,16 @@ cloudflared tunnel --url https://localhost:8080 --no-tls-verify
 ```
 
 **Step 3: Configure your databus**
-Use this as your endpoint:
+Choose your endpoint based on testing needs:
+
+**For SUCCESS testing (returns 200):**
 ```
-https://random-words-here.trycloudflare.com/webhook/positive
+https://andrea-levy-forgot-toolbox.trycloudflare.com/webhook/positive
+```
+
+**For FAILURE testing (returns 500):**
+```
+https://andrea-levy-forgot-toolbox.trycloudflare.com/webhook/negative
 ```
 
 **Step 4: Test the flow**
@@ -74,54 +81,47 @@ Databus accepted your message.
 
 **✅ Subscriber (Server):**
 - **Dashboard**: https://localhost:8080 (monitor activity in real-time)  
-- **Webhook**: https://localhost:8080/webhook/positive (receives messages)
+- **Webhook POSITIVE** (returns 200): https://localhost:8080/webhook/positive
+- **Webhook NEGATIVE** (returns 500): https://localhost:8080/webhook/negative
 
 ## Configure Databus
 
-**Use this endpoint in your databus configuration:**
+**Choose your endpoint based on testing scenario:**
+
+**For SUCCESS testing (databus gets 200 response):**
 ```
 https://YOUR-TUNNEL-URL.trycloudflare.com/webhook/positive
 ```
 
-**Example:** If your tunnel shows `https://fonts-human-riders-seminar.trycloudflare.com`, then use:
+**For FAILURE testing (databus gets 500 response):**
 ```
-https://fonts-human-riders-seminar.trycloudflare.com/webhook/positive
+https://YOUR-TUNNEL-URL.trycloudflare.com/webhook/negative
 ```
+
+**Examples:** If your tunnel shows `https://andrea-levy-forgot-toolbox.trycloudflare.com`, then use:
+- Success: `https://andrea-levy-forgot-toolbox.trycloudflare.com/webhook/positive`
+- Failure: `https://andrea-levy-forgot-toolbox.trycloudflare.com/webhook/negative`
 
 **Important Notes:**
 - Keep the tunnel terminal open - if you close it, the tunnel stops working
 - The tunnel URL changes each time you restart it
 - Update the databus configuration whenever you restart the tunnel
 
-## Testing Response Modes
+## Testing Both Success and Failure Scenarios
 
-Your server can simulate both successful and failed webhook responses for testing:
+No more mode switching needed! Your server now has two endpoints:
 
-### Switch to SUCCESS mode (returns HTTP 200):
-```bash
-curl -X POST https://localhost:8080/api/mode \
-  -H "Content-Type: application/json" \
-  -d '{"mode": "success"}' -k
-```
+### ✅ Test SUCCESS behavior:
+1. **Configure databus** with: `https://your-tunnel-url.trycloudflare.com/webhook/positive`
+2. **Send message**: `python3 send-message-to-databus.py`
+3. **Result**: Databus gets 200 → Message delivered successfully
 
-### Switch to ERROR mode (returns HTTP 500):
-```bash
-curl -X POST https://localhost:8080/api/mode \
-  -H "Content-Type: application/json" \
-  -d '{"mode": "error"}' -k
-```
+### ❌ Test FAILURE behavior:
+1. **Configure databus** with: `https://your-tunnel-url.trycloudflare.com/webhook/negative`
+2. **Send message**: `python3 send-message-to-databus.py`
+3. **Result**: Databus gets 500 → Message failed, databus retries
 
-### Check current mode:
-```bash
-curl -k https://localhost:8080/api/mode
-```
-
-### Testing workflow:
-1. **Default**: Server starts in SUCCESS mode
-2. **Test success**: Send message → databus gets 200 → message delivered  
-3. **Test failure**: Switch to ERROR mode → send message → databus gets 500 → message failed/retried
-4. **Reset**: Switch back to SUCCESS mode for normal operation
-
-### What you'll see:
-- **Mode changes**: `🔧 Response mode changed to: success/error`
-- **Webhooks**: `📨 Webhook received message #X` (always logs, regardless of response code)
+### 📊 Monitor both scenarios:
+- **Dashboard**: https://localhost:8080 shows all messages with endpoint and response code
+- **Logs**: Terminal shows which endpoint received each message
+- **Messages**: Both endpoints store messages, so you can see the full history
