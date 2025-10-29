@@ -3,112 +3,590 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subscriber App - Message Receiver</title>
+    <title>DataBus QA</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #f5f5f5;
+            font-feature-settings: normal;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+            font-variation-settings: normal;
+            background-color: #1d232b;
+            color: #e2e8f0;
+            min-height: 100vh;
+            line-height: 1.6;
         }
+        
+        .navbar {
+            background-color: #15191e;
+            padding: 0 5rem;
+            border-bottom: 1px solid #374151;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .logo-icon {
+            width: 180px;
+            height: 180px;
+            margin: -10px;
+            fill: currentColor;
+            object-fit: contain;
+            display: block;
+        }
+        
+        .status-badge {
+            display: flex;
+            align-items: center;
+            background-color: #21b2a5;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
         .container {
-            background: white;
-            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background-color: #15191e;
+            border: 1px solid #374151;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px -8px rgba(100, 25, 230, 0.3);
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-title {
+            font-size: 0.875rem;
+            color: #9ca3af;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+        }
+        
+        .stat-icon.primary {
+            background-color: rgba(100, 25, 230, 0.2);
+            color: #6419e6;
+        }
+        
+        .stat-icon.pink {
+            background-color: rgba(236, 72, 153, 0.2);
+            color: #ec4899;
+        }
+        
+        .stat-icon.success {
+            background-color: rgba(33, 178, 165, 0.2);
+            color: #21b2a5;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-description {
+            font-size: 0.875rem;
+            color: #9ca3af;
+        }
+        
+        .endpoint-badges {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-direction: column;
+        }
+        
+        .endpoint-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .endpoint-badge.success {
+            background-color: rgba(33, 178, 165, 0.2);
+            color: #21b2a5;
+            border: 1px solid rgba(33, 178, 165, 0.3);
+        }
+        
+        .endpoint-badge.error {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        
+        .messages-section {
+            background-color: #15191e;
+            border: 1px solid #374151;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+        
+        .section-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 0.5rem;
+            fill: currentColor;
+        }
+        
+        .section-badge {
+            background-color: #374151;
+            color: #9ca3af;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem 0;
+        }
+        
+        .empty-icon {
+            width: 64px;
+            height: 64px;
+            background-color: #374151;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+        
+        .empty-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 0.5rem;
+        }
+        
+        .empty-description {
+            color: #9ca3af;
+        }
+        
+        .messages-list {
+            display: none;
+        }
+        
+        .messages-list > * + * {
+            margin-top: 1rem;
+        }
+        
+        .message-card {
+            background-color: #1d232b;
+            border: 1px solid #374151;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem;
+            transition: all 0.2s ease;
+            animation: slideIn 0.3s ease-out;
         }
-        .status {
-            padding: 10px;
-            border-radius: 4px;
-            margin: 10px 0;
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+        
+        .message-card:hover {
+            border-color: #6419e6;
         }
-        .message-log {
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
-            padding: 15px;
-            border-radius: 4px;
-            max-height: 400px;
-            overflow-y: auto;
+        
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .message-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .message-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .message-icon.success {
+            background-color: rgba(33, 178, 165, 0.2);
+            color: #21b2a5;
+        }
+        
+        .message-icon.error {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+        
+        .message-details h4 {
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 0.25rem;
+        }
+        
+        .message-details p {
+            font-size: 0.875rem;
+            color: #9ca3af;
+        }
+        
+        .message-badges {
+            display: flex;
+            gap: 0.5rem;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .message-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .message-badge.status-200 {
+            background-color: rgba(33, 178, 165, 0.2);
+            color: #21b2a5;
+        }
+        
+        .message-badge.status-500 {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+        
+        .message-badge.endpoint {
+            background-color: #374151;
+            color: #9ca3af;
+        }
+        
+        .message-data {
+            background-color: #374151;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .message-data pre {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+            font-size: 0.875rem;
+            color: #e2e8f0;
+            overflow-x: auto;
             white-space: pre-wrap;
-            font-family: monospace;
-            font-size: 12px;
         }
-        h1 {
-            color: #343a40;
-            border-bottom: 2px solid #007bff;
-            padding-bottom: 10px;
-        }
-        .endpoint-info {
-            background-color: #e9ecef;
-            padding: 15px;
-            border-radius: 4px;
-            margin: 20px 0;
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .navbar {
+                padding: 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .message-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+            
+            .message-badges {
+                width: 100%;
+                justify-content: flex-start;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <img src="https://dbus-admin-qa.dataintel.xogrp.com/images/logo-ec7484315d1eac437b0d7c2ca89aa675.svg?vsn=d" alt="DataBus Logo" class="logo-icon" style="width: 130px; height: 130px;">
+                QA
+            </div>
+            <div class="status-badge">
+                <div class="status-dot"></div>
+                Live
+            </div>
+        </div>
+    </nav>
+
     <div class="container">
-        <h1>🔔 Subscriber App - Databus Message Receiver</h1>
-        
-        <div class="endpoint-info">
-            <strong>📡 Endpoint:</strong> https://localhost:8080/webhook/positive<br>
-            <strong>📝 Status:</strong> <span id="serverStatus">Ready to receive messages</span><br>
-            <strong>📊 Messages Received:</strong> <span id="messageCount">0</span>
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <!-- Server Status -->
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-title">Server Status</div>
+                        <div class="stat-value">Active</div>
+                        <div class="stat-description" id="serverStatus">Listening on port 8080</div>
+                    </div>
+                    <div class="stat-icon success">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Message Count -->
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-title">Messages Received</div>
+                        <div class="stat-value" id="messageCount">0</div>
+                        <div class="stat-description">Total webhook calls</div>
+                    </div>
+                    <div class="stat-icon primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Endpoints -->
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-title">Webhook Endpoints</div>
+                        <div class="stat-value">2</div>
+                        <div class="stat-description">Available endpoints</div>
+                    </div>
+                    <div class="stat-icon pink">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ec4899">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="endpoint-badges">
+                    <div class="endpoint-badge success">
+                        <span>200</span>
+                        <span>/webhook/positive</span>
+                    </div>
+                    <div class="endpoint-badge error">
+                        <span>500</span>
+                        <span>/webhook/negative</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="status success">
-            ✅ Server is running and ready to receive databus messages!
+        <!-- Messages Section -->
+        <div class="messages-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Recent Messages
+                </div>
+                <div class="section-badge">Last 10 messages</div>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state">
+                <div class="empty-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9ca3af">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+                    </svg>
+                </div>
+                <div class="empty-title">Waiting for messages</div>
+                <div class="empty-description">Send a test message to see it appear here</div>
+            </div>
+
+            <!-- Messages List -->
+            <div id="messagesList" class="messages-list">
+                <!-- Messages will be populated here -->
+            </div>
         </div>
-
-        <h3>📥 Message Log:</h3>
-        <div id="messageLog" class="message-log">
-Waiting for messages from databus...
-
-</div>
     </div>
 
     <script>
         let messageCount = 0;
-        const messageLog = document.getElementById('messageLog');
         const messageCountEl = document.getElementById('messageCount');
         const serverStatus = document.getElementById('serverStatus');
+        const emptyState = document.getElementById('emptyState');
+        const messagesList = document.getElementById('messagesList');
 
-        // Function to fetch and display real messages
+        // Format timestamp
+        function formatTimestamp(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleTimeString('en-US', { 
+                hour12: false, 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+            });
+        }
+
+        // Create message card
+        function createMessageCard(msg) {
+            const isSuccess = msg.responseCode === 200;
+            const iconClass = isSuccess ? 'success' : 'error';
+            const statusClass = isSuccess ? 'status-200' : 'status-500';
+            
+            return `
+                <div class="message-card">
+                    <div class="message-header">
+                        <div class="message-info">
+                            <div class="message-icon ${iconClass}">
+                                ${isSuccess ? 
+                                    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>' :
+                                    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>'
+                                }
+                            </div>
+                            <div class="message-details">
+                                <h4>Message #${msg.id}</h4>
+                                <p>${formatTimestamp(msg.timestamp)}</p>
+                            </div>
+                        </div>
+                        <div class="message-badges">
+                            <div class="message-badge ${statusClass}">${msg.responseCode}</div>
+                            <div class="message-badge endpoint">${msg.endpoint}</div>
+                        </div>
+                    </div>
+                    <div class="message-data">
+                        <pre>${JSON.stringify(msg.data, null, 2)}</pre>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Fetch and display messages
         function fetchMessages() {
             fetch('/api/messages')
                 .then(response => response.json())
                 .then(data => {
                     messageCountEl.textContent = data.totalCount;
                     
-                    // Display recent messages
                     if (data.messages.length > 0) {
-                        const recentMessages = data.messages.slice(0, 10); // Show last 10
-                        let logContent = 'Recent messages from databus:\n\n';
+                        emptyState.style.display = 'none';
+                        messagesList.style.display = 'block';
                         
-                        recentMessages.forEach(msg => {
-                            const endpointEmoji = msg.responseCode === 200 ? '✅' : '❌';
-                            const endpointName = msg.endpoint || '/webhook/positive';
-                            logContent += `[${msg.timestamp}] ${endpointEmoji} Message #${msg.id} (${endpointName} → ${msg.responseCode})\n`;
-                            logContent += `Data: ${JSON.stringify(msg.data, null, 2)}\n`;
-                            logContent += `---\n\n`;
-                        });
-                        
-                        messageLog.textContent = logContent;
+                        const recentMessages = data.messages.slice(0, 10);
+                        messagesList.innerHTML = recentMessages
+                            .map(msg => createMessageCard(msg))
+                            .join('');
+                    } else {
+                        emptyState.style.display = 'block';
+                        messagesList.style.display = 'none';
                     }
                 })
                 .catch(error => {
                     console.error('Error fetching messages:', error);
+                    serverStatus.textContent = 'Connection error';
                 });
         }
 
         // Update status
-        serverStatus.textContent = 'Listening for databus messages on port 8080';
+        serverStatus.textContent = 'Active - Listening for databus messages';
 
         // Poll for new messages every 2 seconds
         setInterval(fetchMessages, 2000);
