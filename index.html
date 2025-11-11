@@ -25,10 +25,11 @@
             background-color: #15191e;
             padding: 1rem 2rem;
             border-radius: 16px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
             max-width: calc(1600px - 4rem);
             margin: 2rem auto 0;
             width: calc(100% - 8rem);
+            backdrop-filter: blur(10px);
         }
         
         .navbar-content {
@@ -129,16 +130,17 @@
         
         .stat-card {
             background-color: #15191e;
-            border: 1px solid #374151;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            border: 1px solid #2d3748;
+            border-radius: 16px;
+            padding: 1.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px -8px rgba(100, 25, 230, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.4);
+            border-color: #3d4758;
         }
         
         .stat-header {
@@ -222,15 +224,15 @@
             border: 1px solid rgba(248, 114, 113, 0.3);
         }
         
+        
         .messages-section {
             background-color: #191f26;
-            border: 1px solid #374151;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        
-        .section-header {
+            border: 1px solid #2d3748;
+            border-radius: 16px;
+            padding: 2rem;
+            padding-bottom: 3rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }        .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -332,14 +334,18 @@
         
         .message-card {
             background-color: #1d232b;
-            border: 1px solid #374151;
-            border-radius: 8px;
-            padding: 1rem;
-            transition: all 0.2s ease;
+            border: 1px solid #2d3748;
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
         }
         
         .message-card:hover {
-            border-color: #6419e6;
+            background-color: #252d38;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border-color: #60a5fa;
         }
         
         .message-header {
@@ -602,7 +608,7 @@
         <div id="messages-section" class="content-section" style="display: none;">
             <!-- Message Count Cards -->
             <div style="display: flex; justify-content: center; margin-bottom: 3rem; margin-top: 2rem;">
-                <div style="background-color: #1d232b; border-radius: 16px; padding: 1.5rem 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); display: flex;">
+                <div style="background-color: #1d232b; border-radius: 20px; padding: 2rem 0; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); display: flex; border: 1px solid #2d3748;">
                     <!-- Total Messages -->
                     <div style="text-align: center; padding: 0 2rem;">
                         <div style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 0.75rem; font-weight: 500;">Total messages received</div>
