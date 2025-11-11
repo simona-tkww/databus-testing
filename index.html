@@ -23,17 +23,18 @@
         
         .navbar {
             background-color: #15191e;
-            padding: 0 5rem;
-            border-bottom: 1px solid #374151;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            max-width: calc(1600px - 4rem);
+            margin: 2rem auto 0;
+            width: calc(100% - 8rem);
         }
         
         .navbar-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
         }
         
         .logo {
@@ -47,12 +48,44 @@
         }
         
         .logo-icon {
-            width: 180px;
-            height: 180px;
-            margin: -10px;
-            fill: currentColor;
+            width: 160px;
+            height: auto;
             object-fit: contain;
             display: block;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 1rem;
+            list-style: none;
+            margin-left: 2rem;
+        }
+        
+        .nav-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: #9ca3af;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-size: 1.1rem;
+        }
+        
+        .nav-menu li a:hover {
+            background-color: rgba(42, 50, 60, 0.5);
+            color: #e2e8f0;
+        }
+        
+        .nav-menu li a.active {
+            background-color: #2a323c;
+            color: #e2e8f0;
+        }
+        
+        .nav-menu li a svg {
+            width: 24px;
+            height: 24px;
         }
         
         .status-badge {
@@ -81,9 +114,10 @@
         }
         
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 2rem 2rem 2rem 2rem;
+            width: calc(100% - 4rem);
         }
         
         .stats-grid {
@@ -365,11 +399,50 @@
         
         @media (max-width: 768px) {
             .container {
-                padding: 1rem;
+                padding: 0 1rem 1rem 1rem;
+                width: calc(100% - 2rem);
             }
             
             .navbar {
                 padding: 1rem;
+                margin: 1rem auto;
+                width: calc(100% - 6rem);
+            }
+            
+            .navbar-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .navbar-content > div {
+                width: 100%;
+                flex-direction: column !important;
+                align-items: flex-start !important;
+            }
+            
+            .logo {
+                justify-content: center;
+                width: 100%;
+            }
+            
+            .logo-icon {
+                width: 120px;
+            }
+            
+            .nav-menu {
+                margin-left: 0;
+                flex-direction: column;
+                width: 100%;
+                gap: 0.5rem;
+            }
+            
+            .nav-menu li {
+                width: 100%;
+            }
+            
+            .nav-menu li a {
+                width: 100%;
+                justify-content: flex-start;
             }
             
             .stats-grid {
@@ -393,18 +466,41 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="navbar-content">
-            <div class="logo">
-                <img src="https://dbus-admin-qa.dataintel.xogrp.com/images/logo-ec7484315d1eac437b0d7c2ca89aa675.svg?vsn=d" alt="DataBus Logo" class="logo-icon" style="width: 130px; height: 130px;">
-                QA
+            <div style="display: flex; align-items: center; flex: 1;">
+                <div class="logo">
+                    <img src="https://dbus-admin-qa.dataintel.xogrp.com/images/logo-ec7484315d1eac437b0d7c2ca89aa675.svg?vsn=d" alt="DataBus Logo" class="logo-icon">
+                    <span style="margin-left: -10px; font-size: 1.4rem; font-weight: 600;">QA</span>
+                </div>
+                <ul class="nav-menu">
+                    <li>
+                        <a href="#setup" class="active">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path>
+                            </svg>
+                            Setup
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#messages">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+                            </svg>
+                            Messages
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
 
     <div class="container">
-        <!-- Stats Grid -->
-        <div class="stats-grid">
-            <!-- Server Status -->
-            <div class="stat-card">
+        <!-- Setup Section -->
+        <div id="setup-section" class="content-section">
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <!-- Server Status -->
+                <div class="stat-card">
                 <div class="stat-header">
                     <div>
                         <div class="stat-title">Server Status</div>
@@ -414,22 +510,6 @@
                     <div class="stat-icon success">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Message Count -->
-            <div class="stat-card">
-                <div class="stat-header">
-                    <div>
-                        <div class="stat-title">Messages Received</div>
-                        <div class="stat-value" id="messageCount">0</div>
-                        <div class="stat-description">Total webhook calls</div>
-                    </div>
-                    <div class="stat-icon primary">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
                         </svg>
                     </div>
                 </div>
@@ -461,9 +541,30 @@
                 </div>
             </div>
         </div>
+        </div>
 
         <!-- Messages Section -->
-        <div class="messages-section">
+        <div id="messages-section" class="content-section" style="display: none;">
+            <!-- Message Count Card -->
+            <div class="stats-grid" style="margin-bottom: 2rem;">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-title">Messages Received</div>
+                            <div class="stat-value" id="messageCount">0</div>
+                            <div class="stat-description">Total webhook calls</div>
+                        </div>
+                        <div class="stat-icon primary">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Messages -->
+            <div class="messages-section">
             <div class="section-header">
                 <div class="section-title">
                     <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -490,8 +591,40 @@
                 <!-- Messages will be populated here -->
             </div>
         </div>
+        </div>
     </div>
 
+    <script>
+        // Navigation handling
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            const setupSection = document.getElementById('setup-section');
+            const messagesSection = document.getElementById('messages-section');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all links
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    
+                    // Add active class to clicked link
+                    this.classList.add('active');
+                    
+                    // Show/hide sections based on clicked link
+                    const href = this.getAttribute('href');
+                    if (href === '#setup') {
+                        setupSection.style.display = 'block';
+                        messagesSection.style.display = 'none';
+                    } else if (href === '#messages') {
+                        setupSection.style.display = 'none';
+                        messagesSection.style.display = 'block';
+                    }
+                });
+            });
+        });
+        
+    </script>
     <script>
         let messageCount = 0;
         const messageCountEl = document.getElementById('messageCount');
