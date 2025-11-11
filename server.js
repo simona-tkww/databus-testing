@@ -41,11 +41,6 @@ function handleWebhook(req, res, endpoint, responseCode) {
         responseCode: responseCode
       });
 
-      // Keep only last 50 messages
-      if (receivedMessages.length > 50) {
-        receivedMessages = receivedMessages.slice(0, 50);
-      }
-
       const emoji = responseCode === 200 ? '✅' : '❌';
       const type = responseCode === 200 ? 'POSITIVE' : 'NEGATIVE';
       console.log(`${emoji} Webhook ${type} received message #${messageCount} (returning ${responseCode}):`, data);
