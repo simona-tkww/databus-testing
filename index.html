@@ -128,18 +128,19 @@
         }
         
         .stat-card {
-            background-color: #15191e;
-            border: 1px solid #374151;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
+        background-color: #15191e;
+        border: 1px solid #374151;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px -8px rgba(100, 25, 230, 0.3);
+    }
         
-        .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px -8px rgba(100, 25, 230, 0.3);
-        }
         
         .stat-header {
             display: flex;
@@ -516,6 +517,16 @@
             }
         }
     </style>
+    <style>
+        .stat-card {
+            background: #191f26;
+        }
+    </style>
+    <style>
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
@@ -553,49 +564,290 @@
         <!-- Setup Section -->
         <div id="setup-section" class="content-section" style="display: block;">
             <!-- Stats Grid -->
-            <div class="stats-grid">
+            <div class="stats-grid" style="grid-template-columns: 1fr;">
                 <!-- Server Status -->
                 <div class="stat-card">
-                <div class="stat-header">
-                    <div>
-                        <div class="stat-title">Server Status</div>
-                        <div class="stat-value">Active</div>
-                        <div class="stat-description" id="serverStatus">Listening on port 8080</div>
-                    </div>
-                    <div class="stat-icon success">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                        </svg>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div style="flex: 1;">
+                            <div style="display: inline-flex; align-items: center; gap: 0.75rem; padding: 0.5rem 1.25rem; background: rgba(0, 128, 255, 0.18); border: 1px solid rgba(0, 128, 255, 0.38); border-radius: 999px; margin-bottom: 1.25rem;">
+                                <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0080ff, #005fa3); position: relative;">
+                                    <span style="font-size: 0.875rem; font-weight: 700; color: #ffffff;">1</span>
+                                    <div style="position: absolute; inset: -3px; border-radius: 50%; border: 2px solid rgba(0, 128, 255, 0.45); animation: pulse 2s ease-in-out infinite;"></div>
+                                </div>
+                                <span style="font-size: 0.75rem; font-weight: 600; color: #0080ff; text-transform: uppercase; letter-spacing: 0.05em;">Server Status</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.625rem;">
+                                <div style="font-size: 2.5rem; font-weight: 800; color: #ffffff; line-height: 1; background: linear-gradient(135deg, #ffffff 0%, #0080ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Active</div>
+                            </div>
+                            <div style="font-size: 0.9rem; color: #9ca3af; display: flex; align-items: center; gap: 0.5rem;">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px; height: 18px; color: #0080ff;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+                                </svg>
+                                <span id="serverStatus">Listening on port 8080</span>
+                            </div>
+                        </div>
+                                                                                                                                                                                                                        <div style="width: 64px; height: 64px; min-width: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(0, 128, 255, 0.18), rgba(0, 128, 255, 0.05)); border: 1px solid rgba(0, 128, 255, 0.22); box-shadow: 0 4px 12px rgba(0, 128, 255, 0.13);">
+                                                                                                                                                                                                                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0080ff" stroke-width="1.5">
+                                                                                                                                                                                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 17.25v-.228a4.5 4.5 0 0 0-.12-1.03l-2.268-9.64a3.375 3.375 0 0 0-3.285-2.602H7.923a3.375 3.375 0 0 0-3.285 2.602l-2.268 9.64a4.5 4.5 0 0 0-.12 1.03v.228m19.5 0a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3m19.5 0a3 3 0 0 0-3-3H5.25a3 3 0 0 0-3 3m16.5 0h.008v.008h-.008v-.008Zm-3 0h.008v.008h-.008v-.008Z" />
+                                                                                                                                                                                                                                </svg>
+                                                                                                                                                                                                                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Endpoints -->
-            <div class="stat-card">
-                <div class="stat-header">
-                    <div>
-                        <div class="stat-title">Webhook Endpoints</div>
-                        <div class="stat-value">2</div>
-                        <div class="stat-description">Available endpoints</div>
+                <!-- Tunnel Manager (Endpoint Generator) -->
+                <div class="stat-card">
+                    <!-- Actual Tunnel Manager card HTML here -->
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div style="flex: 1;">
+                            <div style="display: inline-flex; align-items: center; gap: 0.75rem; padding: 0.5rem 1.25rem; background: rgba(28, 108, 191, 0.15); border: 1px solid rgba(28, 108, 191, 0.3); border-radius: 999px; margin-bottom: 1.25rem;">
+                                <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1c6cbf, #165a9f); position: relative;">
+                                    <span style="font-size: 0.875rem; font-weight: 700; color: #ffffff;">2</span>
+                                    <div style="position: absolute; inset: -3px; border-radius: 50%; border: 2px solid rgba(28, 108, 191, 0.4); animation: pulse 2s ease-in-out infinite;"></div>
+                                </div>
+                                <span style="font-size: 0.75rem; font-weight: 600; color: #3b8fd9; text-transform: uppercase; letter-spacing: 0.05em;">Endpoint Generator</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.625rem;">
+                                <div style="font-size: 2.5rem; font-weight: 800; color: #ffffff; line-height: 1; background: linear-gradient(135deg, #ffffff 0%, #1c6cbf 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Cloudflared Tunnel</div>
+                            </div>
+                            <div style="font-size: 0.9rem; color: #9ca3af; display: flex; align-items: center; gap: 0.5rem;">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px; height: 18px; color: #1c6cbf;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+                                </svg>
+                                <span>Exposes localhost:8080 to public internet for external testing so DataBus can send messages</span>
+                            </div>
+                        </div>
+                        <div style="width: 64px; height: 64px; min-width: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(28, 108, 191, 0.15), rgba(28, 108, 191, 0.03)); border: 1px solid rgba(28, 108, 191, 0.2); box-shadow: 0 4px 12px rgba(28, 108, 191, 0.12);">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1c6cbf" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
+                            </svg>
+                        </div>
                     </div>
-                    <div class="stat-icon pink">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ec4899">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
-                        </svg>
+                    <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem; align-items: center;">
+                        <div style="position: relative; width: 100%; max-width: 1000px;">
+                            <input 
+                                id="tunnelUrlInput" 
+                                type="text" 
+                                value="Generated endpoint will appear here..." 
+                                readonly
+                                style="
+                                    width: 100%;
+                                    padding: 1rem 1.25rem;
+                                    padding-right: 48px;
+                                    border: 1px solid rgba(96, 165, 250, 0.2);
+                                    border-radius: 12px;
+                                    background: linear-gradient(135deg, rgba(15, 20, 25, 0.8), rgba(15, 20, 25, 0.6));
+                                    backdrop-filter: blur(10px);
+                                    color: #9ca3af;
+                                    font-size: 0.875rem;
+                                    font-family: ui-monospace, monospace;
+                                    transition: all 0.3s ease;
+                                "
+                            />
+                            <button 
+                                id="copyTunnelBtn" 
+                                style="
+                                    position: absolute;
+                                    right: 8px;
+                                    top: 50%;
+                                    transform: translateY(-50%);
+                                    background-color: transparent;
+                                    border: none;
+                                    cursor: pointer;
+                                    padding: 4px;
+                                    display: none;
+                                    color: #9ca3af;
+                                    transition: color 0.2s ease;
+                                "
+                                title="Copy to clipboard"
+                            >
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <button id="generateTunnelBtn" style="
+                            background: linear-gradient(135deg, #1c6cbf, #165a9f);
+                            color: #ffffff;
+                            padding: 1rem 2rem;
+                            border: 1px solid rgba(28, 108, 191, 0.4);
+                            border-radius: 12px;
+                            font-size: 0.9rem;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                            box-shadow: 0 2px 6px rgba(28, 108, 191, 0.15);
+                            letter-spacing: 0.02em;
+                            width: auto;
+                        ">Generate Tunnel Endpoint</button>
                     </div>
                 </div>
-                <div class="endpoint-badges">
-                    <div class="endpoint-badge success">
-                        <span>200</span>
-                        <span>/webhook/positive</span>
+
+                <!-- Webhook Paths -->
+                <div class="stat-card">
+                    <!-- Actual Webhook Paths card HTML here -->
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+                        <div style="flex: 1;">
+                            <div style="display: inline-flex; align-items: center; gap: 0.75rem; padding: 0.5rem 1.25rem; background: rgba(90, 156, 217, 0.15); border: 1px solid rgba(90, 156, 217, 0.3); border-radius: 999px; margin-bottom: 1.25rem;">
+                                <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #5a9cd9, #4a8ac9); position: relative;">
+                                    <span style="font-size: 0.875rem; font-weight: 700; color: #ffffff;">3</span>
+                                    <div style="position: absolute; inset: -3px; border-radius: 50%; border: 2px solid rgba(90, 156, 217, 0.4); animation: pulse 2s ease-in-out infinite;"></div>
+                                </div>
+                                <span style="font-size: 0.75rem; font-weight: 600; color: #7bb3e3; text-transform: uppercase; letter-spacing: 0.05em;">Webhook Paths</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.625rem;">
+                                <div style="font-size: 2.5rem; font-weight: 800; color: #ffffff; line-height: 1; background: linear-gradient(135deg, #ffffff 0%, #5a9cd9 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Available paths</div>
+                            </div>
+                            <div style="font-size: 0.9rem; color: #9ca3af; display: flex; align-items: center; gap: 0.5rem;">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px; height: 18px; color: #5a9cd9;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+                                </svg>
+                                <span>2 webhook paths for testing different response scenarios</span>
+                            </div>
+                        </div>
+                        <div style="width: 64px; height: 64px; min-width: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(90, 156, 217, 0.15), rgba(90, 156, 217, 0.03)); border: 1px solid rgba(90, 156, 217, 0.2); box-shadow: 0 4px 12px rgba(90, 156, 217, 0.12);">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#5a9cd9" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
+                            </svg>
+                        </div>
                     </div>
-                    <div class="endpoint-badge error">
-                        <span>500</span>
-                        <span>/webhook/negative</span>
+                    <div class="endpoint-badges" style="max-width: 900px; width: 100%; margin: 0 auto;">
+                        <div class="endpoint-badge success">
+                            <span>200</span>
+                            <span>/webhook/positive</span>
+                        </div>
+                        <div class="endpoint-badge error">
+                            <span>500</span>
+                            <span>/webhook/negative</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DataBus Integration Card -->
+                <div class="stat-card">
+                    <!-- Actual DataBus Integration card HTML here -->
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div style="flex: 1;">
+                            <div style="display: inline-flex; align-items: center; gap: 0.75rem; padding: 0.5rem 1.25rem; background: rgba(43, 111, 138, 0.15); border: 1px solid rgba(43, 111, 138, 0.3); border-radius: 999px; margin-bottom: 1.25rem;">
+                                <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #2b6f8a, #225970); position: relative;">
+                                    <span style="font-size: 0.875rem; font-weight: 700; color: #ffffff;">4</span>
+                                    <div style="position: absolute; inset: -3px; border-radius: 50%; border: 2px solid rgba(43, 111, 138, 0.4); animation: pulse 2s ease-in-out infinite;"></div>
+                                </div>
+                                <span style="font-size: 0.75rem; font-weight: 600; color: #4a9bb8; text-transform: uppercase; letter-spacing: 0.05em;">DataBus Integration</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.625rem;">
+                                <div style="font-size: 2.5rem; font-weight: 800; color: #ffffff; line-height: 1; background: linear-gradient(135deg, #ffffff 0%, #2b6f8a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Setup Subscription</div>
+                            </div>
+                            <div style="font-size: 0.9rem; color: #9ca3af; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px; height: 18px; color: #2b6f8a;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+                                </svg>
+                                <span>Combine generated endpoint with chosen path and add to DataBus subscription as HTTPS endpoint</span>
+                            </div>
+                            <div style="background: rgba(43, 111, 138, 0.05); border: 1px solid rgba(43, 111, 138, 0.2); border-radius: 12px; padding: 1rem; font-size: 0.85rem;">
+                                <div style="color: #4a9bb8; font-weight: 600; margin-bottom: 0.75rem;">Example URLs:</div>
+                                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                                    <div>
+                                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                                            <span style="color: #22c55e; font-weight: 600;">✓</span>
+                                            <span style="color: #e5e7eb; font-weight: 600;">Success Testing (Returns 200)</span>
+                                        </div>
+                                        <div style="color: #9ca3af; font-family: monospace; font-size: 0.75rem; margin-left: 1.5rem;">
+                                            https://abc-123.trycloudflare.com/webhook/positive
+                                        </div>
+                                        <div style="color: #6b7280; font-size: 0.75rem; margin-left: 1.5rem; margin-top: 0.25rem;">
+                                            Use this for testing successful message delivery scenarios
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                                            <span style="color: #ef4444; font-weight: 600;">✗</span>
+                                            <span style="color: #e5e7eb; font-weight: 600;">Failure Testing (Returns 500)</span>
+                                        </div>
+                                        <div style="color: #9ca3af; font-family: monospace; font-size: 0.75rem; margin-left: 1.5rem;">
+                                            https://abc-123.trycloudflare.com/webhook/negative
+                                        </div>
+                                        <div style="color: #6b7280; font-size: 0.75rem; margin-left: 1.5rem; margin-top: 0.25rem;">
+                                            Use this for testing error handling, retry logic and DLQ Messages
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width: 64px; height: 64px; min-width: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(43, 111, 138, 0.15), rgba(43, 111, 138, 0.03)); border: 1px solid rgba(43, 111, 138, 0.2); box-shadow: 0 4px 12px rgba(43, 111, 138, 0.12);">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4a9bb8" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div style="height: 32px;"></div>
+                </div>
+
+                <!-- Send Message Card -->
+                <div class="stat-card">
+                    <!-- Actual Send Message card HTML here -->
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div style="flex: 1;">
+                            <div style="display: inline-flex; align-items: center; gap: 0.75rem; padding: 0.5rem 1.25rem; background: rgba(102, 193, 178, 0.15); border: 1px solid rgba(102, 193, 178, 0.3); border-radius: 999px; margin-bottom: 1.25rem;">
+                                <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #66c1b2, #52a091); position: relative;">
+                                    <span style="font-size: 0.875rem; font-weight: 700; color: #ffffff;">5</span>
+                                    <div style="position: absolute; inset: -3px; border-radius: 50%; border: 2px solid rgba(102, 193, 178, 0.4); animation: pulse 2s ease-in-out infinite;"></div>
+                                </div>
+                                <span style="font-size: 0.75rem; font-weight: 600; color: #7dd4c5; text-transform: uppercase; letter-spacing: 0.05em;">Send Message</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.625rem;">
+                                <div style="font-size: 2.5rem; font-weight: 800; color: #ffffff; line-height: 1; background: linear-gradient(135deg, #ffffff 0%, #66c1b2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Publish to DataBus</div>
+                            </div>
+                            <div style="font-size: 0.9rem; color: #9ca3af; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px; height: 18px; color: #66c1b2;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+                                </svg>
+                                <span>Send message to DataBus - it stores the message in a subject and forwards to subscribed apps</span>
+                            </div>
+                            <div style="display: flex; justify-content: center;">
+                                <button id="sendMessageBtn" style="
+                                    background: linear-gradient(135deg, #66c1b2, #52a091);
+                                    color: #ffffff;
+                                    padding: 1rem 2rem;
+                                    border: 1px solid rgba(102, 193, 178, 0.4);
+                                    border-radius: 12px;
+                                    font-size: 0.9rem;
+                                    font-weight: 600;
+                                    cursor: pointer;
+                                    transition: all 0.3s ease;
+                                    box-shadow: 0 2px 6px rgba(102, 193, 178, 0.15);
+                                    letter-spacing: 0.02em;
+                                    width: auto;
+                                ">Send Message to DataBus</button>
+                            </div>
+                            <div style="position: relative; margin-top: 1rem; display: none;" id="sendMessageOutputContainer">
+                                <input 
+                                    type="text" 
+                                    id="sendMessageOutput"
+                                    readonly 
+                                    style="
+                                        width: 100%;
+                                        max-width: 600px;
+                                        padding: 1rem;
+                                        background-color: #1a1f2b;
+                                        border: 1px solid rgba(102, 193, 178, 0.3);
+                                        border-radius: 12px;
+                                        color: #9ca3af;
+                                        font-family: monospace;
+                                        font-size: 0.85rem;
+                                        outline: none;
+                                        box-sizing: border-box;
+                                    "
+                                />
+                            </div>
+                        </div>
+                        <div style="width: 64px; height: 64px; min-width: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(102, 193, 178, 0.15), rgba(102, 193, 178, 0.03)); border: 1px solid rgba(102, 193, 178, 0.2); box-shadow: 0 4px 12px rgba(102, 193, 178, 0.12);">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 28px; height: 28px; color: #7dd4c5;">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         </div>
 
         <!-- Messages Section -->

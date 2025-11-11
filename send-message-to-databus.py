@@ -16,8 +16,8 @@ endpoint = 'https://dbus-qa.dataintel.xogrp.com/publish'
 # --- 2. IMPROVED TOKEN GENERATION ---
 print("Generating token...")
 
-# We use datetime.UTC as recommended by the warning
-now = datetime.datetime.now(datetime.UTC)
+# Use timezone-aware UTC time (compatible with Python 3.9+)
+now = datetime.datetime.now(datetime.timezone.utc)
 
 # Current time in UNIX timestamp format
 now_timestamp = int(now.timestamp())
