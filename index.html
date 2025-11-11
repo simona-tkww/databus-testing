@@ -268,18 +268,6 @@
             border-radius: 8px;
             padding: 1rem;
             transition: all 0.2s ease;
-            animation: slideIn 0.3s ease-out;
-        }
-        
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
         
         .message-card:hover {
@@ -487,7 +475,7 @@
                     </svg>
                     Recent Messages
                 </div>
-                <div class="section-badge">Last 10 messages</div>
+                <div class="section-badge" id="messagesBadge">All messages</div>
             </div>
 
             <!-- Empty State -->
@@ -559,38 +547,62 @@
             `;
         }
 
+        // Store last message count to detect changes
+        let lastMessageCountFetched = 0;
+        let lastMessagesHash = '';
+
         // Fetch and display messages
         function fetchMessages() {
             fetch('/api/messages')
                 .then(response => response.json())
                 .then(data => {
-                    messageCountEl.textContent = data.totalCount;
+                    // Create a hash of the messages to detect changes
+                    const currentHash = data.totalCount + '-' + data.messages.map(m => m.id).join(',');
                     
-                    if (data.messages.length > 0) {
-                        emptyState.style.display = 'none';
-                        messagesList.style.display = 'block';
+                    // Only update if something has actually changed
+                    if (currentHash !== lastMessagesHash) {
+                        lastMessagesHash = currentHash;
+                        lastMessageCountFetched = data.totalCount;
                         
-                        const recentMessages = data.messages.slice(0, 10);
-                        messagesList.innerHTML = recentMessages
-                            .map(msg => createMessageCard(msg))
-                            .join('');
-                    } else {
-                        emptyState.style.display = 'block';
-                        messagesList.style.display = 'none';
+                        // Update count
+                        messageCountEl.textContent = data.totalCount;
+                        
+                        if (data.messages.length > 0) {
+                            emptyState.style.display = 'none';
+                            messagesList.style.display = 'block';
+                            
+                            messagesList.innerHTML = data.messages
+                                .map(msg => createMessageCard(msg))
+                                .join('');
+                        } else {
+                            emptyState.style.display = 'block';
+                            messagesList.style.display = 'none';
+                        }
                     }
                 })
                 .catch(error => {
                     console.error('Error fetching messages:', error);
-                    serverStatus.textContent = 'Connection error';
                 });
         }
 
-        // Update status
-        serverStatus.textContent = 'Active - Listening for databus messages';
+        // Initialize on page load
+        function initialize() {
+            updateServerStatus(false);
+            updateTunnelStatus('');
+            checkServerStatus();
+            checkTunnelStatus();
+            fetchMessages();
+        }
 
-        // Poll for new messages every 2 seconds
-        setInterval(fetchMessages, 2000);
-        fetchMessages(); // Initial load
+        // Poll for updates every 2 seconds
+        setInterval(() => {
+            fetchMessages();
+            checkServerStatus();
+            checkTunnelStatus();
+        }, 2000);
+        
+        // Initialize when page loads
+        initialize();
     </script>
 </body>
 </html>
