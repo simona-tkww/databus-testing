@@ -11,6 +11,8 @@ const credentials = { key: privateKey, cert: certificate };
 // Store messages for the dashboard
 let receivedMessages = [];
 let messageCount = 0;
+let successCount = 0;
+let errorCount = 0;
 
 // Helper function to handle webhook requests
 function handleWebhook(req, res, endpoint, responseCode) {
@@ -22,6 +24,11 @@ function handleWebhook(req, res, endpoint, responseCode) {
     try {
       const data = JSON.parse(body);
       messageCount++;
+      if (responseCode === 200) {
+        successCount++;
+      } else {
+        errorCount++;
+      }
       const timestamp = new Date().toISOString();
       
       // Store the message
@@ -96,7 +103,9 @@ const server = https.createServer(credentials, (req, res) => {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ 
       messages: receivedMessages,
-      totalCount: messageCount
+      totalCount: messageCount,
+      successCount: successCount,
+      errorCount: errorCount
     }));
     return;
   }

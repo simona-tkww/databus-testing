@@ -496,7 +496,7 @@
 
     <div class="container">
         <!-- Setup Section -->
-        <div id="setup-section" class="content-section">
+        <div id="setup-section" class="content-section" style="display: block;">
             <!-- Stats Grid -->
             <div class="stats-grid">
                 <!-- Server Status -->
@@ -545,18 +545,45 @@
 
         <!-- Messages Section -->
         <div id="messages-section" class="content-section" style="display: none;">
-            <!-- Message Count Card -->
-            <div class="stats-grid" style="margin-bottom: 2rem;">
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div>
-                            <div class="stat-title">Messages Received</div>
-                            <div class="stat-value" id="messageCount">0</div>
-                            <div class="stat-description">Total webhook calls</div>
+            <!-- Message Count Cards -->
+            <div style="display: flex; justify-content: center; margin-bottom: 3rem; margin-top: 2rem;">
+                <div style="background-color: #1d232b; border-radius: 16px; padding: 1.5rem 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); display: flex;">
+                    <!-- Total Messages -->
+                    <div style="text-align: center; padding: 0 2rem;">
+                        <div style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 0.75rem; font-weight: 500;">Total messages received</div>
+                        <div style="position: relative; display: inline-block;">
+                            <div style="font-size: 3rem; font-weight: 700; color: #e2e8f0;" id="messageCount2">0</div>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="position: absolute; top: 0; right: -50px; width: 28px; height: 28px; color: #e2e8f0;">
+                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+                            </svg>
                         </div>
-                        <div class="stat-icon primary">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+                    </div>
+                    
+                    <!-- Vertical Separator -->
+                    <div style="width: 1px; background-color: #374151; margin: 0 1rem;"></div>
+                    
+                    <!-- Successful Messages -->
+                    <div style="text-align: center; padding: 0 2rem;">
+                        <div style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 0.75rem; font-weight: 500;">Successful messages</div>
+                        <div style="position: relative; display: inline-block;">
+                            <div style="font-size: 3rem; font-weight: 700; color: #21b2a5;" id="successCount">0</div>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="position: absolute; top: 0; right: -50px; width: 28px; height: 28px; color: #21b2a5;">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <!-- Vertical Separator -->
+                    <div style="width: 1px; background-color: #374151; margin: 0 1rem;"></div>
+                    
+                    <!-- Error Messages -->
+                    <div style="text-align: center; padding: 0 2rem;">
+                        <div style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 0.75rem; font-weight: 500;">Error messages</div>
+                        <div style="position: relative; display: inline-block;">
+                            <div style="font-size: 3rem; font-weight: 700; color: #ef4444;" id="errorCount">0</div>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="position: absolute; top: 0; right: -50px; width: 28px; height: 28px; color: #ef4444;">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
                             </svg>
                         </div>
                     </div>
@@ -627,8 +654,9 @@
     </script>
     <script>
         let messageCount = 0;
-        const messageCountEl = document.getElementById('messageCount');
-        const serverStatus = document.getElementById('serverStatus');
+        const messageCountEl2 = document.getElementById('messageCount2');
+        const successCountEl = document.getElementById('successCount');
+        const errorCountEl = document.getElementById('errorCount');
         const emptyState = document.getElementById('emptyState');
         const messagesList = document.getElementById('messagesList');
 
@@ -693,8 +721,10 @@
                         lastMessagesHash = currentHash;
                         lastMessageCountFetched = data.totalCount;
                         
-                        // Update count
-                        messageCountEl.textContent = data.totalCount;
+                        // Update counts from API response
+                        if (messageCountEl2) messageCountEl2.textContent = data.totalCount;
+                        if (successCountEl) successCountEl.textContent = data.successCount || 0;
+                        if (errorCountEl) errorCountEl.textContent = data.errorCount || 0;
                         
                         if (data.messages.length > 0) {
                             emptyState.style.display = 'none';
@@ -715,23 +745,12 @@
         }
 
         // Initialize on page load
-        function initialize() {
-            updateServerStatus(false);
-            updateTunnelStatus('');
-            checkServerStatus();
-            checkTunnelStatus();
-            fetchMessages();
-        }
+        fetchMessages();
 
         // Poll for updates every 2 seconds
         setInterval(() => {
             fetchMessages();
-            checkServerStatus();
-            checkTunnelStatus();
         }, 2000);
-        
-        // Initialize when page loads
-        initialize();
     </script>
 </body>
 </html>
