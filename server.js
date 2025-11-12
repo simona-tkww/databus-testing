@@ -49,6 +49,7 @@ function handleWebhook(req, res, endpoint, responseCode) {
 
       const emoji = responseCode === 200 ? '✅' : '❌';
       const type = responseCode === 200 ? 'POSITIVE' : 'NEGATIVE';
+      console.log('\n\n')
       console.log(`${emoji} Webhook ${type} received message #${messageCount} (returning ${responseCode}):`, data);
 
       // Return appropriate response
