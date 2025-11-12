@@ -257,11 +257,11 @@ const server = https.createServer(credentials, (req, res) => {
       let errorOutput = '';
       nodeProcess.stdout.on('data', (data) => {
         output += data.toString();
-        console.log('[Node STDOUT]:', data.toString());
+        console.log(data.toString());
       });
       nodeProcess.stderr.on('data', (data) => {
         errorOutput += data.toString();
-        console.log('[Node STDERR]:', data.toString());
+        console.log(data.toString());
       });
       nodeProcess.on('close', (code) => {
         function escapeHtml(str) {
