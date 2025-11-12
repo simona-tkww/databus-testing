@@ -4,10 +4,6 @@ node_modules/
 # Environment files
 .env
 
-# Python
-__pycache__/
-*.pyc
-
 # Logs
 *.log
 

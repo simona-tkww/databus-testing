@@ -593,7 +593,7 @@
                             </div>
                             <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.625rem;">
                                 <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                    <div style="font-size: 2.5rem; font-weight: 800; color: #7bb3e3; opacity: 0.7; line-height: 1;">Active</div>
+                                    <div style="font-size: 2.5rem; font-weight: 800; color: #c3d8ea; opacity: 0.7; line-height: 1;">Active</div>
                                     <span style="display: inline-flex; align-items: center;">
                                         <svg width="32" height="32" viewBox="0 0 32 32" style="animation: spin 1s linear infinite; margin-left: 16px; margin-top: 2px;">
                                             <circle cx="16" cy="16" r="13" stroke="#4652b4" stroke-width="4" fill="none" opacity="0.3"/>
@@ -632,7 +632,7 @@
                                 <span style="font-size: 0.75rem; font-weight: 600; color: #3b8fd9; text-transform: uppercase; letter-spacing: 0.05em;">Endpoint Generator</span>
                             </div>
                             <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.625rem;">
-                                <div style="font-size: 2.5rem; font-weight: 800; color: #7bb3e3; opacity: 0.7; line-height: 1;">Cloudflared Tunnel</div>
+                                <div style="font-size: 2.5rem; font-weight: 800; color: #c3d8ea; opacity: 0.7; line-height: 1;">Cloudflared Tunnel</div>
                             </div>
                             <div style="font-size: 0.9rem; color: #9ca3af; display: flex; align-items: center; gap: 0.5rem;">
                                 <span style="display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1.2rem;">
@@ -753,10 +753,10 @@
                                     <span style="font-size: 0.875rem; font-weight: 700; color: #ffffff;">3</span>
                                     <div style="position: absolute; inset: -3px; border-radius: 50%; border: 2px solid rgba(90, 156, 217, 0.4); animation: pulse 2s ease-in-out infinite;"></div>
                                 </div>
-                                <span style="font-size: 0.75rem; font-weight: 600; color: #7bb3e3; text-transform: uppercase; letter-spacing: 0.05em;">Webhook Paths</span>
+                                <span style="font-size: 0.75rem; font-weight: 600; color: #c3d8ea; text-transform: uppercase; letter-spacing: 0.05em;">Webhook Paths</span>
                             </div>
                             <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.625rem;">
-                                <div style="font-size: 2.5rem; font-weight: 800; color: #7bb3e3; opacity: 0.7; line-height: 1;">Available paths</div>
+                                <div style="font-size: 2.5rem; font-weight: 800; color: #c3d8ea; opacity: 0.7; line-height: 1;">Available paths</div>
                             </div>
                             <div style="font-size: 0.9rem; color: #9ca3af; display: flex; align-items: center; gap: 0.5rem;">
                                 <span style="margin-top: 1.2rem; display: inline-flex; align-items: center; gap: 0.5rem;">
@@ -798,7 +798,7 @@
                                 <span style="font-size: 0.75rem; font-weight: 600; color: #4a9bb8; text-transform: uppercase; letter-spacing: 0.05em;">DataBus Integration</span>
                             </div>
                             <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.625rem;">
-                                <div style="font-size: 2.5rem; font-weight: 800; color: #7bb3e3; opacity: 0.7; line-height: 1;">Setup Subscription</div>
+                                <div style="font-size: 2.5rem; font-weight: 800; color: #c3d8ea; opacity: 0.7; line-height: 1;">Setup Subscription</div>
                             </div>
                             <div style="font-size: 0.9rem; color: #9ca3af; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
                                 <span style="margin-top: 1.2rem; display: inline-flex; align-items: center; gap: 0.5rem;">
@@ -860,7 +860,7 @@
                                 <span style="font-size: 0.75rem; font-weight: 600; color: #7dd4c5; text-transform: uppercase; letter-spacing: 0.05em;">Send Message</span>
                             </div>
                             <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.625rem;">
-                                <div style="font-size: 2.5rem; font-weight: 800; color: #7bb3e3; opacity: 0.7; line-height: 1;">Publish to DataBus</div>
+                                <div style="font-size: 2.5rem; font-weight: 800; color: #c3d8ea; opacity: 0.7; line-height: 1;">Publish to DataBus</div>
                             </div>
                             <div style="font-size: 0.9rem; color: #9ca3af; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
                                 <span style="margin-top: 1.2rem; display: inline-flex; align-items: center; gap: 0.5rem;">
@@ -889,24 +889,27 @@
                                 ">Send Message to DataBus</button>
                             </div>
                             <div style="position: relative; margin-top: 1rem; display: none;" id="sendMessageOutputContainer">
-                                <input 
-                                    type="text" 
-                                    id="sendMessageOutput"
-                                    readonly 
-                                    style="
-                                        width: 100%;
-                                        max-width: 600px;
-                                        padding: 1rem;
-                                        background-color: #1a1f2b;
-                                        border: 1px solid rgba(102, 193, 178, 0.3);
-                                        border-radius: 12px;
-                                        color: #9ca3af;
-                                        font-family: monospace;
-                                        font-size: 0.85rem;
-                                        outline: none;
-                                        box-sizing: border-box;
-                                    "
-                                />
+                                <div style="display: flex; justify-content: center;">
+                                    <input 
+                                        type="text" 
+                                        id="sendMessageOutput"
+                                        readonly 
+                                        style="
+                                            width: 100%;
+                                            max-width: 930px;
+                                            padding: 1rem 1.25rem;
+                                            padding-right: 48px;
+                                            border: 1px solid rgba(96, 165, 250, 0.2);
+                                            border-radius: 12px;
+                                            background: linear-gradient(135deg, rgba(15, 20, 25, 0.8), rgba(15, 20, 25, 0.6));
+                                            backdrop-filter: blur(10px);
+                                            color: #9ca3af;
+                                            font-size: 0.875rem;
+                                            font-family: ui-monospace, monospace;
+                                            transition: all 0.3s ease;
+                                        "
+                                    />
+                                </div>
                             </div>
                         </div>
                         <div style="width: 64px; height: 64px; min-width: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(102, 193, 178, 0.15), rgba(102, 193, 178, 0.03)); border: 1px solid rgba(102, 193, 178, 0.2); box-shadow: 0 4px 12px rgba(102, 193, 178, 0.12);">
@@ -1123,6 +1126,45 @@
         const errorCountEl = document.getElementById('errorCount');
         const emptyState = document.getElementById('emptyState');
         const messagesList = document.getElementById('messagesList');
+
+        // Send Message to DataBus button handler
+        document.addEventListener('DOMContentLoaded', function() {
+            const sendMessageBtn = document.getElementById('sendMessageBtn');
+            const sendMessageOutputContainer = document.getElementById('sendMessageOutputContainer');
+            const sendMessageOutput = document.getElementById('sendMessageOutput');
+            if (sendMessageBtn) {
+                sendMessageBtn.addEventListener('click', function() {
+                    sendMessageBtn.disabled = true;
+                    sendMessageBtn.textContent = 'Sending...';
+                    fetch('/api/send-message', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        sendMessageBtn.disabled = false;
+                        sendMessageBtn.textContent = 'Send Message to DataBus';
+                        sendMessageOutputContainer.style.display = 'block';
+                        if (data.success) {
+                            sendMessageOutput.value = 'Message sent successfully and Databus accepted your message!';
+                            sendMessageOutput.style.color = '#21b2a5';
+                        } else {
+                            sendMessageOutput.value = data.error || 'Failed to send message.';
+                            sendMessageOutput.style.color = '#f87271';
+                        }
+                    })
+                    .catch(err => {
+                        sendMessageBtn.disabled = false;
+                        sendMessageBtn.textContent = 'Send Message to DataBus';
+                        sendMessageOutputContainer.style.display = 'block';
+                        sendMessageOutput.value = 'Error sending message.';
+                        sendMessageOutput.style.color = '#f87271';
+                    });
+                });
+            }
+        });
 
         // Format timestamp
         function formatTimestamp(timestamp) {

@@ -237,30 +237,28 @@ const server = https.createServer(credentials, (req, res) => {
   // API endpoint to send message to DataBus
   if (pathname === '/api/send-message' && req.method === 'POST') {
     try {
-      console.log('📤 Executing: python3 send-message-to-databus.py');
-      
-      const pythonProcess = spawn('python3', ['send-message-to-databus.py'], {
+      console.log('📤 Executing: node send-message-to-databus.js');
+      const nodeProcess = spawn('node', ['send-message-to-databus.js'], {
         cwd: __dirname,
         shell: true,
         env: process.env
       });
-      
-      let output = '';
-      let errorOutput = '';
-      
-      pythonProcess.stdout.on('data', (data) => {
+
+      var output = '';
+      var errorOutput = '';
+
+      nodeProcess.stdout.on('data', (data) => {
         output += data.toString();
-        console.log('[Python STDOUT]:', data.toString());
+        console.log('[Node STDOUT]:', data.toString());
       });
-      
-      pythonProcess.stderr.on('data', (data) => {
+
+      nodeProcess.stderr.on('data', (data) => {
         errorOutput += data.toString();
-        console.log('[Python STDERR]:', data.toString());
+        console.log('[Node STDERR]:', data.toString());
       });
-      
-      pythonProcess.on('close', (code) => {
-        console.log(`Python process exited with code ${code}`);
-        
+
+      nodeProcess.on('close', (code) => {
+        console.log(`Node process exited with code ${code}`);
         function escapeHtml(str) {
           if (typeof str !== 'string') return str;
           return str.replace(/[&<>'"`]/g, function (c) {
@@ -290,15 +288,16 @@ const server = https.createServer(credentials, (req, res) => {
           }));
         }
       });
-      
-      pythonProcess.on('error', (error) => {
-        console.error('❌ Error executing Python script:', error);
+
+      nodeProcess.on('error', (error) => {
+        console.error('❌ Error executing Node script:', error);
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ 
           success: false, 
-          error: 'Failed to execute Python script. Make sure Python 3 is installed.'
+          error: 'Failed to execute Node script. Make sure Node.js is installed.'
         }));
       });
+      
     } catch (error) {
       console.error('❌ Error in send-message handler:', error);
       res.writeHead(500, { 'Content-Type': 'application/json' });
