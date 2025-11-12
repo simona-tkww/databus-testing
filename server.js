@@ -13,8 +13,8 @@ try {
 }
 
 // Read SSL certificates
-const privateKey = fs.readFileSync('key.pem', 'utf8');
-const certificate = fs.readFileSync('cert.pem', 'utf8');
+const privateKey = fs.readFileSync(path.join(__dirname, 'certs', 'key.pem'), 'utf8');
+const certificate = fs.readFileSync(path.join(__dirname, 'certs', 'cert.pem'), 'utf8');
 const credentials = { key: privateKey, cert: certificate };
 
 // Store messages for the dashboard
