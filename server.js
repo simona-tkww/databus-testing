@@ -268,7 +268,7 @@ const server = https.createServer(credentials, (req, res) => {
         }
         if (code === 0) {
           sentMessageCount++;
-          console.log('✔️ Message sent successfully and Databus accepted your message!');
+          console.log(`✔️ #${sentMessageCount} Message sent successfully and Databus accepted your message!`);
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ 
             success: true, 
