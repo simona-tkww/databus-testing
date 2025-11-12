@@ -381,6 +381,7 @@ const server = https.createServer(credentials, (req, res) => {
 
 const PORT = 8080;
 console.log('🚩 Starting server with command: node server.js');
+console.log("===================================================================================================");
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`🟣 Subscriber App running at: https://localhost:${PORT}`);
   console.log(`🔵 Dashboard: https://localhost:${PORT}`);
