@@ -142,13 +142,13 @@ const server = https.createServer(credentials, (req, res) => {
       let responded = false;
       let timeout;
 
-      // Start cloudflared tunnel
-      console.log('🌐 Starting cloudflared tunnel with command: cloudflared tunnel --url https://localhost:8080 --no-tls-verify');
+      // Start cloudflared tunnel (quiet mode)
+      console.log('🚩 Starting cloudflared tunnel with command: cloudflared tunnel --url https://localhost:8080 --no-tls-verify');
       tunnelProcess = spawn('cloudflared', ['tunnel', '--url', 'https://localhost:8080', '--no-tls-verify'], {
         stdio: ['ignore', 'pipe', 'pipe']
       });
 
-      console.log('✓ Tunnel process spawned with PID:', tunnelProcess.pid);
+      // Removed PID logging for cleaner output
 
       function respondWithTunnel(url) {
         if (!responded) {
@@ -174,21 +174,27 @@ const server = https.createServer(credentials, (req, res) => {
         const urlMatch = output.match(/https:\/\/[a-zA-Z0-9-]+\.trycloudflare\.com/);
         if (urlMatch) {
           tunnelUrl = urlMatch[0];
-          console.log('✅ Tunnel URL detected:', tunnelUrl);
+          // Don't log here, let the stderr handler log the clean message
           respondWithTunnel(tunnelUrl);
         }
       }
 
       tunnelProcess.stdout.on('data', (data) => {
         const output = data.toString();
-        console.log('[STDOUT]:', output);
+        // Only check for URL, don't log anything
         checkForUrl(output);
       });
 
       tunnelProcess.stderr.on('data', (data) => {
         const output = data.toString();
-        console.log('[STDERR]:', output);
-        // Check for rate limiting
+        // Only show the tunnel ready message
+        if (output.includes('trycloudflare.com')) {
+          const urlMatch = output.match(/https:\/\/[a-zA-Z0-9-]+\.trycloudflare\.com/);
+          if (urlMatch) {
+            console.log('🏁 Tunnel ready:', urlMatch[0]);
+          }
+        }
+        // Check for rate limiting (still need this for error handling)
         if (output.includes('429 Too Many Requests') || output.includes('error code: 1015')) {
           console.error('⚠️ Cloudflare rate limit detected - too many tunnel requests');
           tunnelStatus = 'rate_limited';
@@ -205,7 +211,6 @@ const server = https.createServer(credentials, (req, res) => {
       });
 
       tunnelProcess.on('close', (code) => {
-        console.log(`🔴 Tunnel process exited with code ${code}`);
         tunnelStatus = 'stopped';
         // Only respond with error if tunnelUrl was never detected
         if (!responded) {
@@ -272,7 +277,7 @@ const server = https.createServer(credentials, (req, res) => {
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ 
             success: true, 
-            output: `#${sentMessageCount} Message sent successfully! Check it in messages section ✓`,
+            output: `#${sentMessageCount} Message sent successfully! Check it in the messages section ✓`,
             code: code
           }));
         } else {
@@ -376,4 +381,5 @@ server.listen(PORT, '0.0.0.0', () => {
   console.log(`🟢 Webhook POSITIVE (returns 200): https://localhost:${PORT}/webhook/positive`);
   console.log(`🔴 Webhook NEGATIVE (returns 500): https://localhost:${PORT}/webhook/negative`);
   console.log(`🔵 Dashboard: https://localhost:${PORT}`);
+  console.log(''); // Add spacing before tunnel messages
 });
