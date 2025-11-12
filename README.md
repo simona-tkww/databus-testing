@@ -120,5 +120,4 @@ DATABUS_ENDPOINT=https://dbus-qa.dataintel.xogrp.com/publish
 
 - If you see errors about missing environment variables, check your `.env` file.
 - For SSL errors, ensure `cert.pem` and `key.pem` exist in `backend/certs/`.
-- For tunnel issues, make sure `cloudflared` is installed and in your PATH.
 
