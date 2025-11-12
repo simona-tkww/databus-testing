@@ -144,7 +144,9 @@ const server = https.createServer(credentials, (req, res) => {
       let timeout;
 
       // Start cloudflared tunnel (quiet mode)
+      console.log('\n\n')
       console.log('🚩 Starting cloudflared tunnel with command: cloudflared tunnel --url https://localhost:8080 --no-tls-verify');
+      console.log("===================================================================================================");
       tunnelProcess = spawn('cloudflared', ['tunnel', '--url', 'https://localhost:8080', '--no-tls-verify'], {
         stdio: ['ignore', 'pipe', 'pipe']
       });
@@ -243,7 +245,7 @@ const server = https.createServer(credentials, (req, res) => {
   // API endpoint to send message to DataBus
   if (pathname === '/api/send-message' && req.method === 'POST') {
     try {
-      console.log('\n\n\n'); // Add spacing before message execution
+      console.log('\n\n'); // Add spacing before message execution
       console.log('🚩 Sending message to DataBus with command: node send-message-to-databus.js');
       console.log("===================================================================================================");
       const nodeProcess = spawn('node', ['send-message-to-databus.js'], {
@@ -380,6 +382,7 @@ const server = https.createServer(credentials, (req, res) => {
 });
 
 const PORT = 8080;
+console.log('\n\n')
 console.log('🚩 Starting server with command: node server.js');
 console.log("===================================================================================================");
 server.listen(PORT, '0.0.0.0', () => {
