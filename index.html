@@ -884,7 +884,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px; height: 18px; color: #66c1b2;">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
                                     </svg>
-                                    Send a message to DatabBus – it validates and stores the message in the subject, then forwards it to all subscribed applications.
+                                    Send a message to DatabBus – it validates and stores the message in the subject, then forwards it to all subscribed apps
                                 </span>
                             </div>
                             <div style="display: flex; justify-content: center;">
@@ -1161,31 +1161,45 @@
                 sendMessageBtn.addEventListener('click', function() {
                     sendMessageBtn.disabled = true;
                     sendMessageBtn.innerHTML = '<span style="vertical-align: middle;">Sending</span> <span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span>';
-                    fetch('/api/send-message', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    })
-                    .then(res => res.json())
+                    const startTime = Date.now();
+                    Promise.all([
+                        fetch('/api/send-message', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        }),
+                        new Promise(resolve => setTimeout(resolve, 1000))
+                    ])
+                    .then(([res]) => res.json())
                     .then(data => {
-                        sendMessageBtn.disabled = false;
-                        sendMessageBtn.innerHTML = originalBtnContent;
-                        sendMessageOutputContainer.style.display = 'block';
-                        if (data.success) {
-                            sendMessageOutput.value = data.output;
-                            sendMessageOutput.style.color = '#21b2a5';
-                        } else {
-                            sendMessageOutput.value = data.error || 'Failed to send message.';
-                            sendMessageOutput.style.color = '#f87271';
-                        }
+                        const elapsed = Date.now() - startTime;
+                        const remainingDelay = Math.max(0, 1000 - elapsed);
+                        setTimeout(() => {
+                            sendMessageBtn.disabled = false;
+                            sendMessageBtn.innerHTML = originalBtnContent;
+                            sendMessageOutputContainer.style.display = 'block';
+                            if (data.success) {
+                                sendMessageOutput.value = data.output;
+                                sendMessageOutput.style.color = '#21b2a5';
+                                // Change button text to "Send New Message"
+                                sendMessageBtn.innerHTML = sendMessageBtn.innerHTML.replace('Send Message to DataBus', 'Send New Message');
+                            } else {
+                                sendMessageOutput.value = data.error || 'Failed to send message.';
+                                sendMessageOutput.style.color = '#f87271';
+                            }
+                        }, remainingDelay);
                     })
                     .catch(err => {
-                        sendMessageBtn.disabled = false;
-                        sendMessageBtn.innerHTML = originalBtnContent;
-                        sendMessageOutputContainer.style.display = 'block';
-                        sendMessageOutput.value = 'Error sending message.';
-                        sendMessageOutput.style.color = '#f87271';
+                        const elapsed = Date.now() - startTime;
+                        const remainingDelay = Math.max(0, 1000 - elapsed);
+                        setTimeout(() => {
+                            sendMessageBtn.disabled = false;
+                            sendMessageBtn.innerHTML = originalBtnContent;
+                            sendMessageOutputContainer.style.display = 'block';
+                            sendMessageOutput.value = 'Error sending message.';
+                            sendMessageOutput.style.color = '#f87271';
+                        }, remainingDelay);
                     });
                 });
             }
