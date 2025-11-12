@@ -28,6 +28,7 @@ function handleWebhook(req, res, endpoint, responseCode) {
   });
   req.on('end', () => {
     try {
+      const data = JSON.parse(body);
       messageCount++;
       if (responseCode === 200) {
         successCount++;
