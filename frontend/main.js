@@ -1,6 +1,5 @@
-// Navigation handling
-// ...existing code...
 document.addEventListener('DOMContentLoaded', function() {
+    // Navigation handling
     const navLinks = document.querySelectorAll('.nav-menu a');
     const setupSection = document.getElementById('setup-section');
     const messagesSection = document.getElementById('messages-section');
@@ -19,11 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-});
 
-// Tunnel Endpoint Generation
-// ...existing code...
-document.addEventListener('DOMContentLoaded', function() {
+    // Tunnel Endpoint Generation
     const generateBtn = document.getElementById('generateTunnelBtn');
     const tunnelInput = document.getElementById('tunnelUrlInput');
     const copyBtn = document.getElementById('copyTunnelBtn');
@@ -38,73 +34,69 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         btnDots.style.display = 'none';
     }
-    generateBtn.addEventListener('click', function() {
-        generateBtn.disabled = true;
-        document.getElementById('generateTunnelBtnText').textContent = 'Generating tunnel endpoint';
-        document.getElementById('generateTunnelBtnDots').style.display = 'inline-block';
-        tunnelInput.value = 'Generating tunnel endpoint...';
-        tunnelInput.style.color = '#3b8fd9';
-        function getTextWidth(text, font) {
-            const canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
-            const context = canvas.getContext("2d");
-            context.font = font;
-            const metrics = context.measureText(text);
-            return metrics.width;
-        }
-        fetch('/api/tunnel/start', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById('generateTunnelBtnDots').style.display = 'none';
-            updateButtonText();
-            if (data && data.url) {
-                tunnelUrl = data.url;
-                tunnelInput.value = tunnelUrl;
-                tunnelInput.style.color = '#21b2a5';
-                copyBtn.style.display = 'inline-block';
-                updateButtonText();
-            } else {
-                if (data && data.error && data.error.toLowerCase().includes('too many requests')) {
-                    tunnelInput.value = 'Error: Too many requests. Please try again in 5-10 minutes.';
-                } else {
-                    tunnelInput.value = 'Error: The server may be offline, unreachable, or returned an unexpected error.';
+    if (generateBtn) {
+        generateBtn.addEventListener('click', function() {
+            generateBtn.disabled = true;
+            document.getElementById('generateTunnelBtnText').textContent = 'Generating tunnel endpoint';
+            document.getElementById('generateTunnelBtnDots').style.display = 'inline-block';
+            tunnelInput.value = 'Generating tunnel endpoint...';
+            tunnelInput.style.color = '#3b8fd9';
+            fetch('/api/tunnel/start', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
                 }
+            })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('generateTunnelBtnDots').style.display = 'none';
+                updateButtonText();
+                if (data && data.url) {
+                    tunnelUrl = data.url;
+                    tunnelInput.value = tunnelUrl;
+                    tunnelInput.style.color = '#21b2a5';
+                    copyBtn.style.display = 'inline-block';
+                    updateButtonText();
+                } else {
+                    if (data && data.error && data.error.toLowerCase().includes('too many requests')) {
+                        tunnelInput.value = 'Error: Too many requests. Please try again in 5-10 minutes.';
+                    } else {
+                        tunnelInput.value = 'Error: The server may be offline, unreachable, or returned an unexpected error.';
+                    }
+                    tunnelInput.style.color = '#f87271';
+                    copyBtn.style.display = 'none';
+                    tunnelUrl = '';
+                    updateButtonText();
+                }
+            })
+            .catch(err => {
+                document.getElementById('generateTunnelBtnDots').style.display = 'none';
+                updateButtonText();
+                tunnelInput.value = 'Error: The server may be offline, unreachable, or returned an unexpected error.';
                 tunnelInput.style.color = '#f87271';
                 copyBtn.style.display = 'none';
                 tunnelUrl = '';
                 updateButtonText();
-            }
-        })
-        .catch(err => {
-            document.getElementById('generateTunnelBtnDots').style.display = 'none';
-            updateButtonText();
-            tunnelInput.value = 'Error: The server may be offline, unreachable, or returned an unexpected error.';
-            tunnelInput.style.color = '#f87271';
-            copyBtn.style.display = 'none';
-            tunnelUrl = '';
-            updateButtonText();
-        })
-        .finally(() => {
-            generateBtn.disabled = false;
+            })
+            .finally(() => {
+                generateBtn.disabled = false;
+            });
         });
-    });
-    copyBtn.addEventListener('click', function() {
-        if (tunnelUrl) {
-            navigator.clipboard.writeText(tunnelUrl);
-            copyBtn.style.color = '#21b2a5';
-            setTimeout(() => {
-                copyBtn.style.color = '#9ca3af';
-            }, 1000);
-        }
-    });
+    }
+    if (copyBtn) {
+        copyBtn.addEventListener('click', function() {
+            if (tunnelUrl) {
+                navigator.clipboard.writeText(tunnelUrl);
+                copyBtn.style.color = '#21b2a5';
+                setTimeout(() => {
+                    copyBtn.style.color = '#9ca3af';
+                }, 1200);
+            }
+        });
+    }
 });
 
 // Send Message to DataBus button handler
-// ...existing code...
 document.addEventListener('DOMContentLoaded', function() {
     const sendMessageBtn = document.getElementById('sendMessageBtn');
     const sendMessageOutputContainer = document.getElementById('sendMessageOutputContainer');
