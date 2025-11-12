@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
 const fs = require('fs');
@@ -33,6 +33,10 @@ const jwt_claims = {
 };
 
 console.log(`Token claims:`, jwt_claims);
+if (!jwt_secret) {
+    console.error('❌ ERROR: DATABUS_JWT_SECRET is missing in .env. Please set it to your JWT secret.');
+    process.exit(1);
+}
 const token = jwt.sign(jwt_claims, jwt_secret, { algorithm: 'HS256' });
 
 // --- 3. THE MESSAGE ---
@@ -81,7 +85,6 @@ axios.post(endpoint, body_payload, { headers })
 .then(response => {
     console.log("✅ SUCCESS! (HTTP 200)");
     console.log("Databus accepted your message.");
-      console.log('\n\n')
 
     // --- Update message counter ---
     incrementCounter();

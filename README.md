@@ -34,7 +34,7 @@ pip install requests PyJWT
 
 **Open Terminal 1:**
 ```bash
-node server.js
+node backend/server.js
 ```
 
 **Expected output:**

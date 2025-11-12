@@ -336,21 +336,22 @@ const server = https.createServer(credentials, (req, res) => {
 
   // Serve static files
   let filePath = '';
+  const frontendDir = path.join(__dirname, '..', 'frontend');
   if (pathname === '/' || pathname === '/index.html') {
-    filePath = path.join(__dirname, 'frontend', 'index.html');
+    filePath = path.join(frontendDir, 'index.html');
   } else if (pathname === '/styles.css') {
-    filePath = path.join(__dirname, 'frontend', 'styles.css');
+    filePath = path.join(frontendDir, 'styles.css');
   } else if (pathname === '/main.js') {
-    filePath = path.join(__dirname, 'frontend', 'main.js');
+    filePath = path.join(frontendDir, 'main.js');
   } else {
     // Sanitize pathname to prevent path traversal
     const safePath = pathname.replace(/\.\./g, '');
-    filePath = path.join(__dirname, 'frontend', safePath);
+    filePath = path.join(frontendDir, safePath);
   }
 
   // Validate that the resolved path is within the frontend directory
   const resolvedPath = path.resolve(filePath);
-  const baseDir = path.resolve(path.join(__dirname, 'frontend'));
+  const baseDir = path.resolve(frontendDir);
   if (!resolvedPath.startsWith(baseDir)) {
     res.writeHead(403, { 'Content-Type': 'text/plain' });
     res.end('Forbidden');
