@@ -37,16 +37,22 @@ const token = jwt.sign(jwt_claims, jwt_secret, { algorithm: 'HS256' });
 
 // --- 3. THE MESSAGE ---
 // --- Persistent message counter ---
+// Read current count from counter.json
 let messageCount = 1;
 try {
     if (fs.existsSync(counterFile)) {
         const data = fs.readFileSync(counterFile, 'utf8');
         const obj = JSON.parse(data);
-        if (typeof obj.count === 'number') messageCount = obj.count + 1;
+        if (typeof obj.count === 'number') messageCount = obj.count;
     }
 } catch (e) {
-    // If error, start from 1
     messageCount = 1;
+}
+
+// Function to increment counter.json with each message sent
+function incrementCounter() {
+    messageCount++;
+    fs.writeFileSync(counterFile, JSON.stringify({ count: messageCount }), 'utf8');
 }
 
 const timestamp = Math.floor(Date.now() / 1000);
@@ -78,7 +84,7 @@ axios.post(endpoint, body_payload, { headers })
       console.log('\n\n')
 
     // --- Update message counter ---
-    fs.writeFileSync(counterFile, JSON.stringify({ count: messageCount }), 'utf8');
+    incrementCounter();
     process.exit(0);
 })
 .catch(error => {

@@ -3,6 +3,15 @@ const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
 
+// Reset counter.json to 1 when server starts
+const counterFile = path.join(__dirname, 'counter.json');
+try {
+  fs.writeFileSync(counterFile, JSON.stringify({ count: 0 }), 'utf8');
+  console.log('counter.json reset to 1 at server start');
+} catch (e) {
+  console.error('Failed to reset counter.json:', e);
+}
+
 // Read SSL certificates
 const privateKey = fs.readFileSync('key.pem', 'utf8');
 const certificate = fs.readFileSync('cert.pem', 'utf8');
