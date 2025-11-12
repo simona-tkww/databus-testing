@@ -336,18 +336,21 @@ const server = https.createServer(credentials, (req, res) => {
 
   // Serve static files
   let filePath = '';
-  if (pathname === '/') {
-    filePath = './index.html';
+  if (pathname === '/' || pathname === '/index.html') {
+    filePath = path.join(__dirname, 'frontend', 'index.html');
+  } else if (pathname === '/styles.css') {
+    filePath = path.join(__dirname, 'frontend', 'styles.css');
+  } else if (pathname === '/main.js') {
+    filePath = path.join(__dirname, 'frontend', 'main.js');
   } else {
     // Sanitize pathname to prevent path traversal
     const safePath = pathname.replace(/\.\./g, '');
-    filePath = path.join(__dirname, safePath);
+    filePath = path.join(__dirname, 'frontend', safePath);
   }
 
-  // Validate that the resolved path is within the current directory
+  // Validate that the resolved path is within the frontend directory
   const resolvedPath = path.resolve(filePath);
-  const baseDir = path.resolve(__dirname);
-  
+  const baseDir = path.resolve(path.join(__dirname, 'frontend'));
   if (!resolvedPath.startsWith(baseDir)) {
     res.writeHead(403, { 'Content-Type': 'text/plain' });
     res.end('Forbidden');
@@ -355,7 +358,6 @@ const server = https.createServer(credentials, (req, res) => {
   }
 
   // Check if file exists and serve it
-  // Simple rate limiting: allow max 5 reads per second
   let lastReadTimestamps = [];
   function canReadFile() {
     const now = Date.now();
