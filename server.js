@@ -145,7 +145,7 @@ const server = https.createServer(credentials, (req, res) => {
       let timeout;
 
       // Start cloudflared tunnel (quiet mode)
-      console.log('\n\n')
+      console.log('\n')
       console.log('🚩 Starting cloudflared tunnel with command: cloudflared tunnel --url https://localhost:8080 --no-tls-verify');
       console.log("===================================================================================================");
       tunnelProcess = spawn('cloudflared', ['tunnel', '--url', 'https://localhost:8080', '--no-tls-verify'], {
