@@ -5,10 +5,10 @@ const fs = require('fs');
 
 // --- 1. CONFIGURATION ---
 // Load from environment variables or set defaults
-const api_key = process.env.DATABUS_API_KEY || '<place the api key here>';
+const api_key = process.env.DATABUS_API_KEY;
 const jwt_secret = process.env.DATABUS_JWT_SECRET;
-const subject_id = process.env.DATABUS_SUBJECT_ID || '<place the subject id here>';
-const endpoint = process.env.DATABUS_ENDPOINT || 'https://dbus-qa.dataintel.xogrp.com/publish';
+const subject_id = process.env.DATABUS_SUBJECT_ID;
+const endpoint = process.env.DATABUS_ENDPOINT;
 const counterFile = 'counter.json';
 
 // --- 2. IMPROVED TOKEN GENERATION ---
@@ -34,7 +34,7 @@ const jwt_claims = {
 
 console.log(`Token claims:`, jwt_claims);
 if (!jwt_secret) {
-    console.error('❌ ERROR: DATABUS_JWT_SECRET is missing in .env. Please set it to your JWT secret.');
+    console.error('❌ ERROR: Required environment variable is missing. Please check your .env file.');
     process.exit(1);
 }
 const token = jwt.sign(jwt_claims, jwt_secret, { algorithm: 'HS256' });
@@ -62,8 +62,8 @@ function incrementCounter() {
 const timestamp = Math.floor(Date.now() / 1000);
 const stream_id = `stream-${timestamp}`;
 const message_body = {
-    'message_id': `msg-${timestamp}`,
-    'description': "Test v2 (with improved token) for the DLQ"
+    'message_id': `message-${timestamp}`,
+    'description': "DataBus Test"
 };
 
 const body_payload = {
@@ -92,10 +92,10 @@ axios.post(endpoint, body_payload, { headers })
 })
 .catch(error => {
     if (error.response) {
-        console.log(`\n❌ PUBLISHING ERROR! (HTTP ${error.response.status})`);
+        console.log(`\n❌ Publishing error! (HTTP ${error.response.status})`);
         console.log(`Response: ${JSON.stringify(error.response.data, null, 2)}`);
     } else if (error.request) {
-        console.log(`\n🚫 No response received. Check your network connection.`);
+        console.log(`\n❌ No response received. Check your network connection.`);
     } else {
         console.log(`\n🔧 An unexpected error occurred: ${error.message}`);
     }
