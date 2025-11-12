@@ -1110,7 +1110,11 @@
                             copyBtn.style.display = 'inline-block';
                             updateButtonText();
                         } else {
-                                tunnelInput.value = 'Error: Too many requests. Please try again in 5-10 minutes.';
+                                if (data && data.error && data.error.toLowerCase().includes('too many requests')) {
+                                    tunnelInput.value = 'Error: Too many requests. Please try again in 5-10 minutes.';
+                                } else {
+                                    tunnelInput.value = 'Error: The server may be offline, unreachable, or returned an unexpected error.';
+                                }
                             tunnelInput.style.color = '#f87271';
                             copyBtn.style.display = 'none';
                             tunnelUrl = '';
@@ -1120,13 +1124,12 @@
                     .catch(err => {
                         document.getElementById('generateTunnelBtnDots').style.display = 'none';
                         updateButtonText();
-                            tunnelInput.value = 'Error: Too many requests. Please try again in 5-10 minutes.';
+                        tunnelInput.value = 'Error: The server may be offline, unreachable, or returned an unexpected error.';
                         tunnelInput.style.color = '#f87271';
                         copyBtn.style.display = 'none';
                         tunnelUrl = '';
                         updateButtonText();
-    <!-- Only keep the correct loading-dot animation CSS -->
-                    })
+                })
                     .finally(() => {
                         generateBtn.disabled = false;
                     });
@@ -1197,7 +1200,8 @@
                             sendMessageBtn.disabled = false;
                             sendMessageBtn.innerHTML = originalBtnContent;
                             sendMessageOutputContainer.style.display = 'block';
-                            sendMessageOutput.value = 'Error: The server may be offline, unreachable, or returned an unexpected error. Please check your server status and network connection.';
+                            sendMessageOutput.value = 'Error: The server may be offline, unreachable, or returned an unexpected error.';
+                               sendMessageOutput.style.color = '#f87271';
                         }, remainingDelay);
                     });
                 });
