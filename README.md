@@ -49,7 +49,8 @@ node server.js
 
 **Open Terminal 2:**
 ```bash
-cloudflared tunnel --url https://localhost:8080 --no-tls-verify
+
+cloudflared tunnel --url https://localhost:8080 --no-tls-verify 2>&1 | grep 'trycloudflare.com'
 ```
 
 **Look for your tunnel URL:**

@@ -75,6 +75,7 @@ axios.post(endpoint, body_payload, { headers })
 .then(response => {
     console.log("✅ SUCCESS! (HTTP 200)");
     console.log("Databus accepted your message.");
+      console.log('\n\n')
 
     // --- Update message counter ---
     fs.writeFileSync(counterFile, JSON.stringify({ count: messageCount }), 'utf8');
