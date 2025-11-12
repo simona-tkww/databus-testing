@@ -240,25 +240,19 @@ const server = https.createServer(credentials, (req, res) => {
       console.log('📤 Executing: node send-message-to-databus.js');
       const nodeProcess = spawn('node', ['send-message-to-databus.js'], {
         cwd: __dirname,
-        shell: true,
         env: process.env
       });
-
-      var output = '';
-      var errorOutput = '';
-
+      let output = '';
+      let errorOutput = '';
       nodeProcess.stdout.on('data', (data) => {
         output += data.toString();
         console.log('[Node STDOUT]:', data.toString());
       });
-
       nodeProcess.stderr.on('data', (data) => {
         errorOutput += data.toString();
         console.log('[Node STDERR]:', data.toString());
       });
-
       nodeProcess.on('close', (code) => {
-        console.log(`Node process exited with code ${code}`);
         function escapeHtml(str) {
           if (typeof str !== 'string') return str;
           return str.replace(/[&<>'"`]/g, function (c) {
@@ -273,10 +267,11 @@ const server = https.createServer(credentials, (req, res) => {
           });
         }
         if (code === 0) {
+          console.log('Message sent successfully and Databus accepted your message!');
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ 
             success: true, 
-            output: escapeHtml(output || 'Message sent successfully!'),
+            output: 'Message sent successfully and Databus accepted your message!',
             code: code
           }));
         } else {
@@ -288,7 +283,6 @@ const server = https.createServer(credentials, (req, res) => {
           }));
         }
       });
-
       nodeProcess.on('error', (error) => {
         console.error('❌ Error executing Node script:', error);
         res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -297,7 +291,6 @@ const server = https.createServer(credentials, (req, res) => {
           error: 'Failed to execute Node script. Make sure Node.js is installed.'
         }));
       });
-      
     } catch (error) {
       console.error('❌ Error in send-message handler:', error);
       res.writeHead(500, { 'Content-Type': 'application/json' });

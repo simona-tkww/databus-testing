@@ -680,7 +680,7 @@
             display: inline-block;
             width: 6px;
             height: 6px;
-            background-color: #3b8fd9;
+            background-color: rgba(102, 193, 178, 0.85);
             border-radius: 50%;
             margin-left: 2px;
             opacity: 0.5;
@@ -907,6 +907,7 @@
                                             font-size: 0.875rem;
                                             font-family: ui-monospace, monospace;
                                             transition: all 0.3s ease;
+                                            margin-bottom: 1.5rem;
                                         "
                                     />
                                 </div>
@@ -1132,10 +1133,11 @@
             const sendMessageBtn = document.getElementById('sendMessageBtn');
             const sendMessageOutputContainer = document.getElementById('sendMessageOutputContainer');
             const sendMessageOutput = document.getElementById('sendMessageOutput');
+            let originalBtnContent = sendMessageBtn ? sendMessageBtn.innerHTML : '';
             if (sendMessageBtn) {
                 sendMessageBtn.addEventListener('click', function() {
                     sendMessageBtn.disabled = true;
-                    sendMessageBtn.textContent = 'Sending...';
+                    sendMessageBtn.innerHTML = '<span style="vertical-align: middle;">Sending</span> <span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span>';
                     fetch('/api/send-message', {
                         method: 'POST',
                         headers: {
@@ -1145,7 +1147,7 @@
                     .then(res => res.json())
                     .then(data => {
                         sendMessageBtn.disabled = false;
-                        sendMessageBtn.textContent = 'Send Message to DataBus';
+                        sendMessageBtn.innerHTML = originalBtnContent;
                         sendMessageOutputContainer.style.display = 'block';
                         if (data.success) {
                             sendMessageOutput.value = 'Message sent successfully and Databus accepted your message!';
@@ -1157,7 +1159,7 @@
                     })
                     .catch(err => {
                         sendMessageBtn.disabled = false;
-                        sendMessageBtn.textContent = 'Send Message to DataBus';
+                        sendMessageBtn.innerHTML = originalBtnContent;
                         sendMessageOutputContainer.style.display = 'block';
                         sendMessageOutput.value = 'Error sending message.';
                         sendMessageOutput.style.color = '#f87271';
