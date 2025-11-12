@@ -137,8 +137,7 @@
     }
 
     .stat-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px -8px rgba(100, 25, 230, 0.3);
+    border-color: #9ca3af;
     }
         
         
@@ -199,28 +198,44 @@
             gap: 0.5rem;
             margin-top: 1rem;
             flex-direction: column;
+            width: 100%;
         }
         
         .endpoint-badge {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.25rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.75rem;
+            gap: 1.5rem;
+            padding: 0.5rem 1.25rem;
+            border-radius: 14px;
+            font-size: 1rem;
             font-weight: 500;
+            justify-content: flex-start;
+            background: linear-gradient(90deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.08) 100%);
+            box-shadow: 0 4px 16px rgba(33,178,165,0.10);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.12);
+            transition: background 0.4s, box-shadow 0.4s, color 0.3s, border 0.3s;
         }
         
         .endpoint-badge.success {
-            background-color: rgba(33, 178, 165, 0.2);
+            background: linear-gradient(90deg,
+                rgba(33,178,165,0.22) 0%,
+                rgba(33,178,165,0.10) 80%,
+                rgba(33,178,165,0.00) 100%),
+                linear-gradient(0deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.00) 100%);
             color: #21b2a5;
-            border: 1px solid rgba(33, 178, 165, 0.3);
+            border: 1px solid rgba(33,178,165,0.14);
         }
         
         .endpoint-badge.error {
-            background-color: rgba(248, 114, 113, 0.2);
+            background: linear-gradient(90deg,
+                rgba(248,114,113,0.22) 0%,
+                rgba(248,114,113,0.10) 80%,
+                rgba(248,114,113,0.00) 100%),
+                linear-gradient(0deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.00) 100%);
             color: #f87271;
-            border: 1px solid rgba(248, 114, 113, 0.3);
+            border: 1px solid rgba(248,114,113,0.14);
         }
         
         .messages-section {
@@ -577,13 +592,21 @@
                                 <span style="font-size: 0.75rem; font-weight: 600; color: #0080ff; text-transform: uppercase; letter-spacing: 0.05em;">Server Status</span>
                             </div>
                             <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.625rem;">
-                                <div style="font-size: 2.5rem; font-weight: 800; color: #ffffff; line-height: 1; background: linear-gradient(135deg, #ffffff 0%, #0080ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Active</div>
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <div style="font-size: 2.5rem; font-weight: 800; color: #ffffff; line-height: 1; background: linear-gradient(135deg, #ffffff 0%, #0080ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Active</div>
+                                    <span style="display: inline-flex; align-items: center;">
+                                        <svg width="32" height="32" viewBox="0 0 32 32" style="animation: spin 1s linear infinite; margin-left: 16px; margin-top: 2px;">
+                                            <circle cx="16" cy="16" r="13" stroke="#0080ff" stroke-width="4" fill="none" opacity="0.3"/>
+                                            <path d="M30 16a14 14 0 0 1-14 14" stroke="#0080ff" stroke-width="4" fill="none"/>
+                                        </svg>
+                                    </span>
+                                </div>
                             </div>
                             <div style="font-size: 0.9rem; color: #9ca3af; display: flex; align-items: center; gap: 0.5rem;">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px; height: 18px; color: #0080ff;">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
                                 </svg>
-                                <span id="serverStatus">Listening on port 8080</span>
+                                <span id="serverStatus">Listening on port 8080 – operates as a real-time subscriber application</span>
                             </div>
                         </div>
                                                                                                                                                                                                                         <div style="width: 64px; height: 64px; min-width: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(0, 128, 255, 0.18), rgba(0, 128, 255, 0.05)); border: 1px solid rgba(0, 128, 255, 0.22); box-shadow: 0 4px 12px rgba(0, 128, 255, 0.13);">
@@ -624,25 +647,49 @@
                     </div>
                     <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem; align-items: center;">
                         <div style="position: relative; width: 100%; max-width: 1000px;">
-                            <input 
-                                id="tunnelUrlInput" 
-                                type="text" 
-                                value="Generated endpoint will appear here..." 
-                                readonly
-                                style="
-                                    width: 100%;
-                                    padding: 1rem 1.25rem;
-                                    padding-right: 48px;
-                                    border: 1px solid rgba(96, 165, 250, 0.2);
-                                    border-radius: 12px;
-                                    background: linear-gradient(135deg, rgba(15, 20, 25, 0.8), rgba(15, 20, 25, 0.6));
-                                    backdrop-filter: blur(10px);
-                                    color: #9ca3af;
-                                    font-size: 0.875rem;
-                                    font-family: ui-monospace, monospace;
-                                    transition: all 0.3s ease;
-                                "
-                            />
+                            <div style="position: relative; width: 100%; display: flex; align-items: center;">
+                                <div style="position: relative; width: 100%;">
+                                    <input 
+                                        id="tunnelUrlInput" 
+                                        type="text" 
+                                        value="Generated endpoint will appear here..." 
+                                        readonly
+                                        style="
+                                            width: 100%;
+                                            padding: 1rem 1.25rem;
+                                            padding-right: 48px;
+                                            border: 1px solid rgba(96, 165, 250, 0.2);
+                                            border-radius: 12px;
+                                            background: linear-gradient(135deg, rgba(15, 20, 25, 0.8), rgba(15, 20, 25, 0.6));
+                                            backdrop-filter: blur(10px);
+                                            color: #9ca3af;
+                                            font-size: 0.875rem;
+                                            font-family: ui-monospace, monospace;
+                                            transition: all 0.3s ease;
+                                        "
+                                    />
+                                    <!-- Loading dots animation removed from input field -->
+                                </div>
+                            </div>
+    <style>
+        .loading-dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: #3b8fd9;
+            border-radius: 50%;
+            margin-left: 2px;
+            opacity: 0.5;
+            animation: tunnel-dot-bounce 1.4s infinite ease-in-out both;
+        }
+        .loading-dot:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dot:nth-child(2) { animation-delay: -0.16s; }
+        .loading-dot:nth-child(3) { animation-delay: 0s; }
+        @keyframes tunnel-dot-bounce {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+    </style>
                             <button 
                                 id="copyTunnelBtn" 
                                 style="
@@ -678,7 +725,15 @@
                             box-shadow: 0 2px 6px rgba(28, 108, 191, 0.15);
                             letter-spacing: 0.02em;
                             width: auto;
-                        ">Generate Tunnel Endpoint</button>
+                            position: relative;
+                        ">
+                            <span id="generateTunnelBtnText">Generate Tunnel Endpoint</span>
+                            <span id="generateTunnelBtnDots" style="display:none; margin-left:8px; vertical-align:middle;">
+                                <span class="loading-dot"></span>
+                                <span class="loading-dot"></span>
+                                <span class="loading-dot"></span>
+                            </span>
+                        </button>
                     </div>
                 </div>
 
@@ -710,14 +765,14 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="endpoint-badges" style="max-width: 900px; width: 100%; margin: 0 auto;">
-                        <div class="endpoint-badge success">
+                    <div class="endpoint-badges" style="max-width: 450px; width: 100%; margin: 0;">
+                        <div class="endpoint-badge success" style="width: 100%;">
                             <span>200</span>
-                            <span>/webhook/positive</span>
+                            <span style="margin-left: 1rem; text-align: left; flex: 1;">/webhook/positive</span>
                         </div>
-                        <div class="endpoint-badge error">
+                        <div class="endpoint-badge error" style="width: 100%;">
                             <span>500</span>
-                            <span>/webhook/negative</span>
+                            <span style="margin-left: 1rem; text-align: left; flex: 1;">/webhook/negative</span>
                         </div>
                     </div>
                 </div>
@@ -964,6 +1019,88 @@
             });
         });
         
+            // Tunnel Endpoint Generation
+            document.addEventListener('DOMContentLoaded', function() {
+                const generateBtn = document.getElementById('generateTunnelBtn');
+                const tunnelInput = document.getElementById('tunnelUrlInput');
+                const copyBtn = document.getElementById('copyTunnelBtn');
+                let tunnelUrl = '';
+
+                function updateButtonText() {
+                    const btnText = document.getElementById('generateTunnelBtnText');
+                    const btnDots = document.getElementById('generateTunnelBtnDots');
+                    if (tunnelUrl) {
+                        btnText.textContent = 'Regenerate Tunnel Endpoint';
+                    } else {
+                        btnText.textContent = 'Generate Tunnel Endpoint';
+                    }
+                    btnDots.style.display = 'none';
+                }
+
+                generateBtn.addEventListener('click', function() {
+                    generateBtn.disabled = true;
+                    document.getElementById('generateTunnelBtnText').textContent = 'Generating tunnel endpoint';
+                    document.getElementById('generateTunnelBtnDots').style.display = 'inline-block';
+                    tunnelInput.value = 'Generating tunnel endpoint...';
+                    tunnelInput.style.color = '#3b8fd9';
+
+                    function getTextWidth(text, font) {
+                        const canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
+                        const context = canvas.getContext("2d");
+                        context.font = font;
+                        const metrics = context.measureText(text);
+                        return metrics.width;
+                    }
+
+                    fetch('/api/tunnel/start', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        document.getElementById('generateTunnelBtnDots').style.display = 'none';
+                        updateButtonText();
+                        if (data && data.url) {
+                            tunnelUrl = data.url;
+                            tunnelInput.value = tunnelUrl;
+                            tunnelInput.style.color = '#21b2a5';
+                            copyBtn.style.display = 'inline-block';
+                            updateButtonText();
+                        } else {
+                                tunnelInput.value = 'Error: Too many requests. Please try again in 5 or 10 minutes.';
+                            tunnelInput.style.color = '#f87271';
+                            copyBtn.style.display = 'none';
+                            tunnelUrl = '';
+                            updateButtonText();
+                        }
+                    })
+                    .catch(err => {
+                        document.getElementById('generateTunnelBtnDots').style.display = 'none';
+                        updateButtonText();
+                            tunnelInput.value = 'Error: Too many requests. Please try again in 5 or 10 minutes.';
+                        tunnelInput.style.color = '#f87271';
+                        copyBtn.style.display = 'none';
+                        tunnelUrl = '';
+                        updateButtonText();
+    <!-- Only keep the correct loading-dot animation CSS -->
+                    })
+                    .finally(() => {
+                        generateBtn.disabled = false;
+                    });
+                });
+
+                copyBtn.addEventListener('click', function() {
+                    if (tunnelUrl) {
+                        navigator.clipboard.writeText(tunnelUrl);
+                        copyBtn.style.color = '#21b2a5';
+                        setTimeout(() => {
+                            copyBtn.style.color = '#9ca3af';
+                        }, 1000);
+                    }
+                });
+            });
     </script>
     <script>
         let messageCount = 0;
@@ -985,37 +1122,55 @@
         }
 
         // Create message card
-        function createMessageCard(msg) {
-            const isSuccess = msg.responseCode === 200;
-            const iconClass = isSuccess ? 'success' : 'error';
-            const statusClass = isSuccess ? 'status-200' : 'status-500';
-            
-            return `
-                <div class="message-card">
-                    <div class="message-header">
-                        <div class="message-info">
-                            <div class="message-icon ${iconClass}">
-                                ${isSuccess ? 
-                                    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>' :
-                                    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>'
-                                }
+            // Escape HTML special characters to prevent XSS
+            function escapeHtml(str) {
+                if (typeof str !== 'string') return str;
+                return str.replace(/[&<>'"`]/g, function (c) {
+                    return {
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        "'": '&#39;',
+                        '"': '&quot;',
+                        '`': '&#96;'
+                    }[c];
+                });
+            }
+
+            function createMessageCard(msg) {
+                const isSuccess = msg.responseCode === 200;
+                const iconClass = isSuccess ? 'success' : 'error';
+                const statusClass = isSuccess ? 'status-200' : 'status-500';
+                // Escape all user-controlled data
+                const safeId = escapeHtml(String(msg.id));
+                const safeEndpoint = escapeHtml(String(msg.endpoint));
+                const safeData = escapeHtml(JSON.stringify(msg.data, null, 2));
+                return `
+                    <div class="message-card">
+                        <div class="message-header">
+                            <div class="message-info">
+                                <div class="message-icon ${iconClass}">
+                                    ${isSuccess ? 
+                                        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>' :
+                                        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>'
+                                    }
+                                </div>
+                                <div class="message-details">
+                                    <h4>Message #${safeId}</h4>
+                                    <p>${formatTimestamp(msg.timestamp)}</p>
+                                </div>
                             </div>
-                            <div class="message-details">
-                                <h4>Message #${msg.id}</h4>
-                                <p>${formatTimestamp(msg.timestamp)}</p>
+                            <div class="message-badges">
+                                <div class="message-badge ${statusClass}">Status Code: ${escapeHtml(String(msg.responseCode))}</div>
+                                <div class="message-badge endpoint">Endpoint: ${safeEndpoint}</div>
                             </div>
                         </div>
-                        <div class="message-badges">
-                            <div class="message-badge ${statusClass}">Status Code: ${msg.responseCode}</div>
-                            <div class="message-badge endpoint">Endpoint: ${msg.endpoint}</div>
+                        <div class="message-data">
+                            <pre>${safeData}</pre>
                         </div>
                     </div>
-                    <div class="message-data">
-                        <pre>${JSON.stringify(msg.data, null, 2)}</pre>
-                    </div>
-                </div>
-            `;
-        }
+                `;
+            }
 
         // Store last message count to detect changes
         let lastMessageCountFetched = 0;

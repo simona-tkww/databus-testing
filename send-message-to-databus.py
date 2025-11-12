@@ -6,8 +6,9 @@ import json
 import datetime
 
 # --- 1. PASTE YOUR NEW DATA HERE ---
-api_key = 'DHm24gGQFpj3TrLLt7qqQdgtrH'
-jwt_secret = 'HfbwJBfCHWzWJs7ZS0gA-gNepajAAkdT9AR-_ao2t6K'
+import os
+api_key = os.getenv('DATABUS_API_KEY')
+jwt_secret = os.getenv('DATABUS_JWT_SECRET')
 subject_id = '0efa1b4d-95a6-4237-bd65-fdd67cae10fa'
 # ------------------------------------
 

@@ -139,64 +139,80 @@ const server = https.createServer(credentials, (req, res) => {
     try {
       tunnelStatus = 'starting';
       tunnelUrl = null;
-      
+      let responded = false;
+      let timeout;
+
       // Start cloudflared tunnel
       console.log('🌐 Starting cloudflared tunnel with command: cloudflared tunnel --url https://localhost:8080 --no-tls-verify');
       tunnelProcess = spawn('cloudflared', ['tunnel', '--url', 'https://localhost:8080', '--no-tls-verify'], {
         stdio: ['ignore', 'pipe', 'pipe']
       });
-      
+
       console.log('✓ Tunnel process spawned with PID:', tunnelProcess.pid);
-      
+
+      function respondWithTunnel(url) {
+        if (!responded) {
+          responded = true;
+          clearTimeout(timeout);
+          tunnelStatus = url ? 'running' : 'error';
+          res.writeHead(url ? 200 : 500, { 'Content-Type': 'application/json' });
+          if (url) {
+            res.end(JSON.stringify({ success: true, url }));
+          } else {
+            res.end(JSON.stringify({ success: false, error: 'Error: Too many requests. Please try again in 5-10 minutes.' }));
+          }
+        }
+      }
+
+      // Wait max 30 seconds for tunnel URL
+      timeout = setTimeout(() => {
+        respondWithTunnel(tunnelUrl);
+      }, 30000);
+
       // Capture output to extract tunnel URL
+      function checkForUrl(output) {
+        const urlMatch = output.match(/https:\/\/[a-zA-Z0-9-]+\.trycloudflare\.com/);
+        if (urlMatch) {
+          tunnelUrl = urlMatch[0];
+          console.log('✅ Tunnel URL detected:', tunnelUrl);
+          respondWithTunnel(tunnelUrl);
+        }
+      }
+
       tunnelProcess.stdout.on('data', (data) => {
         const output = data.toString();
         console.log('[STDOUT]:', output);
-        
-        // Look for the tunnel URL in the output
-        const urlMatch = output.match(/https:\/\/[a-zA-Z0-9-]+\.trycloudflare\.com/);
-        if (urlMatch && !tunnelUrl) {
-          tunnelUrl = urlMatch[0];
-          tunnelStatus = 'running';
-          console.log('✅ Tunnel URL detected:', tunnelUrl);
-        }
+        checkForUrl(output);
       });
-      
+
       tunnelProcess.stderr.on('data', (data) => {
         const output = data.toString();
         console.log('[STDERR]:', output);
-        
         // Check for rate limiting
         if (output.includes('429 Too Many Requests') || output.includes('error code: 1015')) {
           console.error('⚠️ Cloudflare rate limit detected - too many tunnel requests');
           tunnelStatus = 'rate_limited';
         }
-        
-        // Also check stderr for URL (cloudflared outputs to stderr)
-        const urlMatch = output.match(/https:\/\/[a-zA-Z0-9-]+\.trycloudflare\.com/);
-        if (urlMatch && !tunnelUrl) {
-          tunnelUrl = urlMatch[0];
-          tunnelStatus = 'running';
-          console.log('✅ Tunnel URL detected:', tunnelUrl);
-        }
+        checkForUrl(output);
       });
-      
+
       tunnelProcess.on('error', (error) => {
         console.error('❌ Tunnel process error:', error);
         console.error('This usually means cloudflared is not installed or not in PATH');
         tunnelStatus = 'error';
         tunnelProcess = null;
+        respondWithTunnel(null);
       });
-      
+
       tunnelProcess.on('close', (code) => {
         console.log(`🔴 Tunnel process exited with code ${code}`);
         tunnelStatus = 'stopped';
-        tunnelUrl = null;
+        // Only respond with error if tunnelUrl was never detected
+        if (!responded) {
+          respondWithTunnel(tunnelUrl);
+        }
         tunnelProcess = null;
       });
-      
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ success: true, message: 'Tunnel starting...', pid: tunnelProcess.pid }));
     } catch (error) {
       console.error('❌ Error starting tunnel:', error);
       console.error('Error details:', error.message);
@@ -245,18 +261,31 @@ const server = https.createServer(credentials, (req, res) => {
       pythonProcess.on('close', (code) => {
         console.log(`Python process exited with code ${code}`);
         
+        function escapeHtml(str) {
+          if (typeof str !== 'string') return str;
+          return str.replace(/[&<>'"`]/g, function (c) {
+            return {
+              '&': '&amp;',
+              '<': '&lt;',
+              '>': '&gt;',
+              "'": '&#39;',
+              '"': '&quot;',
+              '`': '&#96;'
+            }[c];
+          });
+        }
         if (code === 0) {
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ 
             success: true, 
-            output: output || 'Message sent successfully!',
+            output: escapeHtml(output || 'Message sent successfully!'),
             code: code
           }));
         } else {
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ 
             success: false, 
-            error: errorOutput || output || 'Failed to send message',
+            error: escapeHtml(errorOutput || output || 'Failed to send message'),
             code: code
           }));
         }
@@ -273,7 +302,20 @@ const server = https.createServer(credentials, (req, res) => {
     } catch (error) {
       console.error('❌ Error in send-message handler:', error);
       res.writeHead(500, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ success: false, error: error.message }));
+      function escapeHtml(str) {
+        if (typeof str !== 'string') return str;
+        return str.replace(/[&<>'"`]/g, function (c) {
+          return {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            "'": '&#39;',
+            '"': '&quot;',
+            '`': '&#96;'
+          }[c];
+        });
+      }
+      res.end(JSON.stringify({ success: false, error: escapeHtml(error.message) }));
     }
     return;
   }
@@ -299,6 +341,23 @@ const server = https.createServer(credentials, (req, res) => {
   }
 
   // Check if file exists and serve it
+  // Simple rate limiting: allow max 5 reads per second
+  let lastReadTimestamps = [];
+  function canReadFile() {
+    const now = Date.now();
+    lastReadTimestamps = lastReadTimestamps.filter(ts => now - ts < 1000);
+    if (lastReadTimestamps.length < 5) {
+      lastReadTimestamps.push(now);
+      return true;
+    }
+    return false;
+  }
+
+  if (!canReadFile()) {
+    res.writeHead(429, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: false, error: 'Rate limit exceeded. Try again later.' }));
+    return;
+  }
   fs.readFile(filePath, (err, data) => {
     if (err) {
       res.writeHead(404, { 'Content-Type': 'text/plain' });
