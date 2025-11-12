@@ -242,7 +242,8 @@ const server = https.createServer(credentials, (req, res) => {
   // API endpoint to send message to DataBus
   if (pathname === '/api/send-message' && req.method === 'POST') {
     try {
-      console.log('✉️ Executing: node send-message-to-databus.js');
+      console.log(''); // Add spacing before message execution
+      console.log('🚩 Sending message to DataBus with command: node send-message-to-databus.js');
       const nodeProcess = spawn('node', ['send-message-to-databus.js'], {
         cwd: __dirname,
         env: process.env
@@ -376,10 +377,11 @@ const server = https.createServer(credentials, (req, res) => {
 });
 
 const PORT = 8080;
+console.log('🚩 Starting server with command: node server.js');
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`🟣 Subscriber App running at https://localhost:${PORT}`);
-  console.log(`🟢 Webhook POSITIVE (returns 200): https://localhost:${PORT}/webhook/positive`);
-  console.log(`🔴 Webhook NEGATIVE (returns 500): https://localhost:${PORT}/webhook/negative`);
+  console.log(`🟣 Subscriber App running at: https://localhost:${PORT}`);
   console.log(`🔵 Dashboard: https://localhost:${PORT}`);
+  console.log(`🟢 Webhook POSITIVE (returns 200): /webhook/positive`);
+  console.log(`⚫️ Webhook NEGATIVE (returns 500): /webhook/negative`);
   console.log(''); // Add spacing before tunnel messages
 });
