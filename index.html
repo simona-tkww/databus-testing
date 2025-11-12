@@ -657,7 +657,8 @@
                                         id="tunnelUrlInput" 
                                         type="text" 
                                         value="Generated endpoint will appear here..." 
-                                        readonly
+                                        readonly 
+                                        tabindex="-1"
                                         style="
                                             width: 100%;
                                             padding: 1rem 1.25rem;
@@ -670,7 +671,12 @@
                                             font-size: 0.875rem;
                                             font-family: ui-monospace, monospace;
                                             transition: all 0.3s ease;
+                                            pointer-events: none;
+                                            user-select: none;
+                                            outline: none;
+                                            box-shadow: none;
                                         "
+                                        onfocus="this.blur();"
                                     />
                                     <!-- Loading dots animation removed from input field -->
                                 </div>
@@ -894,6 +900,7 @@
                                         type="text" 
                                         id="sendMessageOutput"
                                         readonly 
+                                        tabindex="-1"
                                         style="
                                             width: 100%;
                                             max-width: 930px;
@@ -908,7 +915,12 @@
                                             font-family: ui-monospace, monospace;
                                             transition: all 0.3s ease;
                                             margin-bottom: 1.5rem;
+                                            pointer-events: none;
+                                            user-select: none;
+                                            outline: none;
+                                            box-shadow: none;
                                         "
+                                        onfocus="this.blur();"
                                     />
                                 </div>
                             </div>
@@ -1150,7 +1162,7 @@
                         sendMessageBtn.innerHTML = originalBtnContent;
                         sendMessageOutputContainer.style.display = 'block';
                         if (data.success) {
-                            sendMessageOutput.value = 'Message sent successfully and Databus accepted your message!';
+                            sendMessageOutput.value = 'Message sent successfully! Check it in section messages.';
                             sendMessageOutput.style.color = '#21b2a5';
                         } else {
                             sendMessageOutput.value = data.error || 'Failed to send message.';
