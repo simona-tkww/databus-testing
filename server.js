@@ -243,8 +243,9 @@ const server = https.createServer(credentials, (req, res) => {
   // API endpoint to send message to DataBus
   if (pathname === '/api/send-message' && req.method === 'POST') {
     try {
-      console.log(''); // Add spacing before message execution
+      console.log('\n\n\n'); // Add spacing before message execution
       console.log('🚩 Sending message to DataBus with command: node send-message-to-databus.js');
+      console.log("===================================================================================================");
       const nodeProcess = spawn('node', ['send-message-to-databus.js'], {
         cwd: __dirname,
         env: process.env
@@ -275,6 +276,7 @@ const server = https.createServer(credentials, (req, res) => {
         }
         if (code === 0) {
           sentMessageCount++;
+          console.log("===================================================================================================");
           console.log(`✔️ #${sentMessageCount} Message sent successfully and Databus accepted your message!`);
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ 

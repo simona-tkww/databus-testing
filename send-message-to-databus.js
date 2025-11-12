@@ -1,6 +1,7 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
+const fs = require('fs');
 
 // --- 1. CONFIGURATION ---
 // Load from environment variables or set defaults
@@ -8,9 +9,10 @@ const api_key = process.env.DATABUS_API_KEY || '<place the api key here>';
 const jwt_secret = process.env.DATABUS_JWT_SECRET;
 const subject_id = process.env.DATABUS_SUBJECT_ID || '<place the subject id here>';
 const endpoint = process.env.DATABUS_ENDPOINT || 'https://dbus-qa.dataintel.xogrp.com/publish';
+const counterFile = 'counter.json';
 
 // --- 2. IMPROVED TOKEN GENERATION ---
-console.log("Generating token (v2)...");
+console.log("Generating token...");
 
 // Current time in UNIX timestamp format (seconds)
 const now_timestamp = Math.floor(Date.now() / 1000);
@@ -34,6 +36,19 @@ console.log(`Token claims:`, jwt_claims);
 const token = jwt.sign(jwt_claims, jwt_secret, { algorithm: 'HS256' });
 
 // --- 3. THE MESSAGE ---
+// --- Persistent message counter ---
+let messageCount = 1;
+try {
+    if (fs.existsSync(counterFile)) {
+        const data = fs.readFileSync(counterFile, 'utf8');
+        const obj = JSON.parse(data);
+        if (typeof obj.count === 'number') messageCount = obj.count + 1;
+    }
+} catch (e) {
+    // If error, start from 1
+    messageCount = 1;
+}
+
 const timestamp = Math.floor(Date.now() / 1000);
 const stream_id = `stream-${timestamp}`;
 const message_body = {
@@ -58,8 +73,11 @@ const headers = {
 
 axios.post(endpoint, body_payload, { headers })
 .then(response => {
-    console.log("\n✅ SUCCESS! (HTTP 200)");
+    console.log("✅ SUCCESS! (HTTP 200)");
     console.log("Databus accepted your message.");
+
+    // --- Update message counter ---
+    fs.writeFileSync(counterFile, JSON.stringify({ count: messageCount }), 'utf8');
     process.exit(0);
 })
 .catch(error => {

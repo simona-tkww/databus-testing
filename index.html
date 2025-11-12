@@ -1197,8 +1197,7 @@
                             sendMessageBtn.disabled = false;
                             sendMessageBtn.innerHTML = originalBtnContent;
                             sendMessageOutputContainer.style.display = 'block';
-                            sendMessageOutput.value = 'Error sending message.';
-                            sendMessageOutput.style.color = '#f87271';
+                            sendMessageOutput.value = 'Error: The server may be offline, unreachable, or returned an unexpected error. Please check your server status and network connection.';
                         }, remainingDelay);
                     });
                 });
