@@ -1173,7 +1173,7 @@
                         sendMessageBtn.innerHTML = originalBtnContent;
                         sendMessageOutputContainer.style.display = 'block';
                         if (data.success) {
-                            sendMessageOutput.value = 'Message sent successfully! Check it in messages section ✓';
+                            sendMessageOutput.value = data.output;
                             sendMessageOutput.style.color = '#21b2a5';
                         } else {
                             sendMessageOutput.value = data.error || 'Failed to send message.';

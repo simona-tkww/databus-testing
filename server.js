@@ -13,6 +13,7 @@ let receivedMessages = [];
 let messageCount = 0;
 let successCount = 0;
 let errorCount = 0;
+let sentMessageCount = 0;
 
 // Tunnel management
 let tunnelProcess = null;
@@ -27,7 +28,6 @@ function handleWebhook(req, res, endpoint, responseCode) {
   });
   req.on('end', () => {
     try {
-      const data = JSON.parse(body);
       messageCount++;
       if (responseCode === 200) {
         successCount++;
@@ -267,11 +267,12 @@ const server = https.createServer(credentials, (req, res) => {
           });
         }
         if (code === 0) {
+          sentMessageCount++;
           console.log('✔️ Message sent successfully and Databus accepted your message!');
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ 
             success: true, 
-            output: 'Message sent successfully and Databus accepted your message!',
+            output: `#${sentMessageCount} Message sent successfully! Check it in messages section ✓`,
             code: code
           }));
         } else {
