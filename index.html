@@ -10,6 +10,17 @@
             padding: 0;
             box-sizing: border-box;
         }
+    </style>
+    <style>
+    .show-checkmark {
+        animation: checkmark-pop 0.7s cubic-bezier(.68,-0.55,.27,1.55) 1;
+        color: #21b2a5 !important;
+    }
+    @keyframes checkmark-pop {
+        0% { color: #21b2a5; transform: scale(1); }
+        60% { color: #21b2a5; transform: scale(1.2); }
+        100% { color: #21b2a5; transform: scale(1); }
+    }
         
         body {
             font-feature-settings: normal;
@@ -607,7 +618,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#4652b4" style="width: 18px; height: 18px;">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
                                     </svg>
-                                    Listening on port 8080 – operates as a real-time subscriber application
+                                    Listening on port 8080 – runs as a real-time subscriber application
                                 </span>
                             </div>
                         </div>
@@ -639,7 +650,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px; height: 18px; color: #1c6cbf;">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
                                     </svg>
-                                    Exposes localhost:8080 to public internet for external testing so DataBus can send messages
+                                   Expose localhost:8080 to the public internet – allows DatabBus to deliver messages to your locally running app for testing
                                 </span>
                             </div>
                         </div>
@@ -769,7 +780,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px; height: 18px; color: #5a9cd9;">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
                                     </svg>
-                                    2 webhook paths for testing different response scenarios
+                                    2 webhook paths – test different response scenarios
                                 </span>
                             </div>
                         </div>
@@ -811,7 +822,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px; height: 18px; color: #2b6f8a;">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
                                     </svg>
-                                    Combine generated endpoint with chosen path and add to DataBus subscription as HTTPS endpoint
+                                   Combine the generated public endpoint with a chosen path – add it to the DatabBus subscription as an HTTPS endpoint
                                 </span>
                             </div>
                             <div style="background: rgba(43, 111, 138, 0.05); border: 1px solid rgba(43, 111, 138, 0.2); border-radius: 12px; padding: 1rem; font-size: 0.85rem; max-width: 800px; width: 100%; margin: 0;">
@@ -873,7 +884,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px; height: 18px; color: #66c1b2;">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
                                     </svg>
-                                    Send message to DataBus - it stores the message in a subject and forwards to subscribed apps
+                                    Send a message to DatabBus – it validates and stores the message in the subject, then forwards it to all subscribed applications.
                                 </span>
                             </div>
                             <div style="display: flex; justify-content: center;">
@@ -1162,7 +1173,7 @@
                         sendMessageBtn.innerHTML = originalBtnContent;
                         sendMessageOutputContainer.style.display = 'block';
                         if (data.success) {
-                            sendMessageOutput.value = 'Message sent successfully! Check it in section messages.';
+                            sendMessageOutput.value = 'Message sent successfully! Check it in messages section ✓';
                             sendMessageOutput.style.color = '#21b2a5';
                         } else {
                             sendMessageOutput.value = data.error || 'Failed to send message.';
