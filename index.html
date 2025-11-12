@@ -1110,7 +1110,7 @@
                             copyBtn.style.display = 'inline-block';
                             updateButtonText();
                         } else {
-                                tunnelInput.value = 'Error: Too many requests. Please try again in 5 or 10 minutes.';
+                                tunnelInput.value = 'Error: Too many requests. Please try again in 5-10 minutes.';
                             tunnelInput.style.color = '#f87271';
                             copyBtn.style.display = 'none';
                             tunnelUrl = '';
@@ -1120,7 +1120,7 @@
                     .catch(err => {
                         document.getElementById('generateTunnelBtnDots').style.display = 'none';
                         updateButtonText();
-                            tunnelInput.value = 'Error: Too many requests. Please try again in 5 or 10 minutes.';
+                            tunnelInput.value = 'Error: Too many requests. Please try again in 5-10 minutes.';
                         tunnelInput.style.color = '#f87271';
                         copyBtn.style.display = 'none';
                         tunnelUrl = '';

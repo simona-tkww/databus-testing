@@ -197,7 +197,7 @@ const server = https.createServer(credentials, (req, res) => {
         }
         // Check for rate limiting (still need this for error handling)
         if (output.includes('429 Too Many Requests') || output.includes('error code: 1015')) {
-          console.error('⚠️ Cloudflare rate limit detected - too many tunnel requests');
+          console.error('⚠️ Cloudflare rate limit detected - too many tunnel requests. Please try again in 5-10 minutes.');
           tunnelStatus = 'rate_limited';
         }
         checkForUrl(output);
