@@ -110,7 +110,7 @@ DATABUS_ENDPOINT=https://dbus-qa.dataintel.xogrp.com/publish
 
 ## 📝 Notes
 
-- **Keep all three terminals open while testing**; Closing the first terminal stops the server and prevents the app from working, closing the second (tunnel) terminal stops public access, and closing the third terminal stops the message-sending process.
+- **Keep all three terminals open while testing via terminal**; Closing the first terminal stops the server and prevents the app from working, closing the second (tunnel) terminal stops public access, and closing the third terminal stops the message-sending process.
 - **Update webhook URLs in Databus**; Every time you restart the tunnel, a new public URL is generated. You must update the webhook URLs in Databus with this new URL so messages can reach your local app.
 - **SSL**: Self-signed certificates are used, so --no-tls-verify must be added for Cloudflared to bypass certificate verification.
 - **Environment variables**: Set in `.env` (API keys, secrets, etc.).
