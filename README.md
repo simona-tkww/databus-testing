@@ -5,6 +5,7 @@ This is a testing setup for Databus messaging systems using Node.js. This projec
 ## 📦 Project Structure
 
 ```
+assets/                    # Project images
 backend/
   server.js                # HTTPS server, webhook endpoints, dashboard
   send-message-to-databus.js # Script to send test messages to Databus
@@ -13,7 +14,7 @@ backend/
 frontend/
   index.html               # Dashboard UI
   styles.css               # Dashboard styles
-  main.js                  # Dashboard JS
+  main.js                  # Dashboard JSassets/       
 .env                       # Environment variables (created individually by each user; not included in the repository)
 .gitignore                 # Ignores non-essential files
 package.json               # Lists dependencies and project metadata
